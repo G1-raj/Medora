@@ -22,7 +22,7 @@ struct AppButton: View {
                 .foregroundStyle(.white)
                 .bold()
                 .clipShape(
-                    RoundedRectangle(cornerRadius: 32)
+                    RoundedRectangle(cornerRadius: 18)
                 )
                 .padding(.horizontal, 30)
         }
