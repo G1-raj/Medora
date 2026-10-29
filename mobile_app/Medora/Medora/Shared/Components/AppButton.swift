@@ -8,11 +8,31 @@
 import SwiftUI
 
 struct AppButton: View {
+    
+    let label: String
+    let action: () -> Void
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button(action: action) {
+            Text(label)
+                .frame(maxWidth: .infinity)
+                .frame(height: 55)
+                .background(.themeAccent)
+                .font(.title2)
+                .foregroundStyle(.white)
+                .bold()
+                .clipShape(
+                    RoundedRectangle(cornerRadius: 32)
+                )
+                .padding(.horizontal, 30)
+        }
     }
 }
 
 #Preview {
-    AppButton()
+    AppButton(
+        label: "Continue",
+    ) {
+        print("Button is pressed")
+    }
 }
