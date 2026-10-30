@@ -32,7 +32,7 @@ struct SignUpView: View {
                     
                     formFields
                     
-                    AppButton(label: "Create Account") {
+                    AppButton(label: "Create Account", isLoading: isLoading) {
                         createAccount()
                     }
                     .padding(.bottom, 30)
