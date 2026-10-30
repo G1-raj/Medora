@@ -18,8 +18,14 @@ struct AuthNavigator: View {
                 Spacer(minLength: 40)
                 
                 VStack(spacing: 16) {
-                    loginWithAppleButton
-                    loginWithGoogleButton
+                    AppleSignInButton {
+                        print("Apple SIgn in button is pressed")
+                    }
+                    
+                    
+                    GoogleSignInButton {
+                        print("Google sign in button is pressed")
+                    }
                 }
                 
                 divider
@@ -107,58 +113,6 @@ struct AuthNavigator: View {
                 .frame(height: 1)
         }
         .padding(.horizontal, 30)
-    }
-    
-    private var loginWithAppleButton: some View {
-        Button {
-            
-        } label: {
-            HStack(spacing: 16) {
-                Image(systemName: "apple.logo")
-                    .font(.system(size: 30))
-                    .foregroundStyle(.white)
-                
-                Text("Continue with Apple")
-                    .foregroundStyle(.white)
-                    .bold()
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 55)
-            .background(.themeAccent)
-            .clipShape(
-                RoundedRectangle(cornerRadius: 18)
-            )
-            .padding(.horizontal, 20)
-        }
-    }
-    
-    private var loginWithGoogleButton: some View {
-        Button {
-            
-        } label: {
-            HStack(spacing: 16) {
-                Image("google_logo")
-                    .resizable()
-                    .scaledToFill()
-                    .clipped()
-                    .frame(width: 30, height: 30)
-                
-                Text("Continue with Google")
-                    .foregroundStyle(.black)
-                    .bold()
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 55)
-            .background(.white)
-            .clipShape(
-                RoundedRectangle(cornerRadius: 18)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 18)
-                    .stroke(.gray, lineWidth: 1)
-            )
-            .padding(.horizontal, 20)
-        }
     }
 }
 

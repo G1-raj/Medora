@@ -10,7 +10,10 @@ import SwiftUI
 struct LoginView: View {
     var body: some View {
         NavigationStack {
-            
+            VStack {
+                
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }
