@@ -17,40 +17,42 @@ struct LoginView: View {
     
     @State private var isLoading: Bool = false
     
+    var onSignUp: () -> Void
+    var onForgotPassword: () -> Void
+    
+    
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 28) {
-                    header
-                    
-                    formFields
-                    
-                    forgotPasswordButton
-                    
-                    AppButton(label: "Sign In", isLoading: isLoading) {
-                        signIn()
-                    }
-                    
-                    divider
-                    
-                    oAuthButtons
+        ScrollView {
+            VStack(alignment: .leading, spacing: 28) {
+                header
                 
+                formFields
+                
+                forgotPasswordButton
+                
+                AppButton(label: "Sign In", isLoading: isLoading) {
+                    signIn()
                 }
-                .padding(.horizontal, 24)
-                .padding(.top, 32)
-                .padding(.bottom, 24)
-                .frame(maxWidth: 500)
-                .frame(maxWidth: .infinity)
-            }
-            .scrollDismissesKeyboard(.interactively)
-            .background(.background)
-            .toolbar(.hidden, for: .navigationBar)
-            .safeAreaInset(edge: .bottom) {
+                
+                divider
+                
+                oAuthButtons
+                    .padding(.bottom, 20)
+                
                 footer
-                    .padding(.bottom)
+                
             }
+            .padding(.horizontal, 24)
+            .padding(.top, 32)
+            .padding(.bottom, 24)
+            .frame(maxWidth: 500)
+            .frame(maxWidth: .infinity)
         }
+        .scrollDismissesKeyboard(.interactively)
+        .background(.background)
+        .toolbar(.hidden, for: .navigationBar)
     }
+    
     
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -119,7 +121,7 @@ struct LoginView: View {
     
     private var forgotPasswordButton: some View {
         TextButton(text: "Forgot Password?") {
-            print("Forgot password is pressed")
+            onForgotPassword()
         }
         .frame(maxWidth: .infinity, alignment: .trailing)
     }
@@ -147,8 +149,8 @@ struct LoginView: View {
             Text("Don't have an account?")
                 .foregroundStyle(.secondary)
 
-            NavigationLink("Sign Up") {
-                SignUpView()
+            TextButton(text: "Sign Up") {
+                onSignUp()
             }
             .fontWeight(.semibold)
             .tint(.themeAccent)
@@ -190,8 +192,12 @@ struct LoginView: View {
             print("Form validation successful")
         }
     }
+    
+    
 }
 
 #Preview {
-    LoginView()
+    LoginView(
+        onSignUp: {}, onForgotPassword: {}
+    )
 }

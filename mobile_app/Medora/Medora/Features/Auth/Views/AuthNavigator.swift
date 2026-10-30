@@ -8,47 +8,54 @@
 import SwiftUI
 
 struct AuthNavigator: View {
+    
+    var onLogIn: () -> Void
+    
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                Spacer(minLength: 30)
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(spacing: 0) {
+                    Spacer(minLength: 30)
 
-                header
+                    header
 
-                Spacer(minLength: 40)
-                
-                VStack(spacing: 16) {
-                    AppleSignInButton {
-                        print("Apple SIgn in button is pressed")
+                    Spacer(minLength: 40)
+
+                    VStack(spacing: 16) {
+                        AppleSignInButton {
+                            print("Apple Sign in pressed")
+                        }
+
+                        GoogleSignInButton {
+                            print("Google sign in pressed")
+                        }
                     }
-                    
-                    
-                    GoogleSignInButton {
-                        print("Google sign in button is pressed")
-                    }
+
+                    divider
+                        .padding(.vertical, 28)
+
+                    continueWithEmail
+
+                    Spacer(minLength: 40)
+
+                    termsAndServices
+                        .padding(.horizontal, 16)
+                        .padding(.top, 16)
+                        .padding(.bottom, 12)
                 }
-                
-                divider
-                    .padding(.vertical, 28)
-                
-                continueWithEmail
-                
-                Spacer(minLength: 40)
+                .padding(.horizontal, 24)
+                .padding(.top, 32)
+                .padding(.bottom, 24)
+                .frame(maxWidth: 500)
+                .frame(maxWidth: .infinity)
+                .frame(minHeight: geometry.size.height)
             }
-            .padding(.horizontal, 24)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .scrollDismissesKeyboard(.interactively)
             .background(.background)
-            .toolbar(.hidden)
-            .safeAreaInset(edge: .bottom, spacing: 0) {
-                termsAndServices
-                    .padding(.horizontal, 16)
-                    .padding(.top, 16)
-                    .padding(.bottom, 12)
-                    .frame(maxWidth: .infinity)
-                    .background(.background)
-            }
         }
+        .toolbar(.hidden, for: .navigationBar)
     }
+    
     
     private var header: some View {
         VStack(spacing: 12) {
@@ -66,12 +73,8 @@ struct AuthNavigator: View {
     }
     
     private var continueWithEmail: some View {
-        Button {
-            
-        } label: {
-            Text("Continue with Email")
-                .foregroundStyle(.themeAccent)
-                .bold()
+        TextButton(text: "Continue With Email") {
+            onLogIn()
         }
     }
     
@@ -114,8 +117,14 @@ struct AuthNavigator: View {
         }
         .padding(.horizontal, 30)
     }
+    
+    
 }
 
 #Preview {
-    AuthNavigator()
+    AuthNavigator(
+        onLogIn: {
+            print("Login view")
+        }
+    )
 }

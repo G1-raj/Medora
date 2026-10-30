@@ -20,44 +20,44 @@ struct SignUpView: View {
     
     @State private var isLoading: Bool = false
     
+    var onBack: () -> Void
+    
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 28) {
-                    
-                    appBar
-                    
-                    header
-                    
-                    formFields
-                    
-                    AppButton(label: "Create Account", isLoading: isLoading) {
-                        createAccount()
-                    }
-                    .padding(.bottom, 30)
-                    
-                    
-                    
-                    footer
-                    
+        ScrollView {
+            VStack(alignment: .leading, spacing: 28) {
+                
+                appBar
+                
+                header
+                
+                formFields
+                
+                AppButton(label: "Create Account", isLoading: isLoading) {
+                    createAccount()
                 }
-                .padding(.horizontal, 24)
-                .padding(.top, 32)
-                .padding(.bottom, 24)
-                .frame(maxWidth: 500)
-                .frame(maxWidth: .infinity)
+                .padding(.bottom, 30)
+                
+                
+                
+                footer
+                
             }
-            .scrollDismissesKeyboard(.interactively)
-            .background(.background)
-            .toolbar(.hidden, for: .navigationBar)
+            .padding(.horizontal, 24)
+            .padding(.top, 32)
+            .padding(.bottom, 24)
+            .frame(maxWidth: 500)
+            .frame(maxWidth: .infinity)
         }
+        .scrollDismissesKeyboard(.interactively)
+        .background(.background)
+        .toolbar(.hidden, for: .navigationBar)
     }
     
     private var appBar: some View {
         HStack {
             Button {
-                dismiss()
+                onBack()
             } label: {
                 Image(systemName: "chevron.left")
                     .foregroundStyle(.black)
@@ -150,9 +150,8 @@ struct SignUpView: View {
             Text("Already have an account?")
                 .foregroundStyle(.secondary)
 
-            NavigationLink("Sign In") {
-                // Replace with your actual SignInView
-                Text("Sign In")
+            Button("Sign In") {
+                onBack()
             }
             .fontWeight(.semibold)
             .tint(.themeAccent)
@@ -207,5 +206,7 @@ struct SignUpView: View {
 }
 
 #Preview {
-    SignUpView()
+    SignUpView(
+        onBack: {}
+    )
 }

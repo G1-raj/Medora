@@ -56,60 +56,56 @@ struct OnboardingView: View {
 
     @State private var currentPage = 0
     @State private var isMovingForward = true
-    @State private var navigateToAuth = false
 
     private var isLastPage: Bool {
         currentPage == content.count - 1
     }
+    
+    var onGetStarted: () -> Void
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
+        VStack(spacing: 0) {
 
-                OnboardingComponent(
-                    imageUrl: content[currentPage].imageUrl,
-                    headTitle: content[currentPage].title,
-                    subTitle: content[currentPage].subTitle
-                )
-                .id(currentPage)
-                .transition(
-                    .asymmetric(
-                        insertion: .offset(
-                            x: isMovingForward ? 35 : -35
-                        )
-                        .combined(with: .opacity),
-
-                        removal: .offset(
-                            x: isMovingForward ? -20 : 20
-                        )
-                        .combined(with: .opacity)
+            OnboardingComponent(
+                imageUrl: content[currentPage].imageUrl,
+                headTitle: content[currentPage].title,
+                subTitle: content[currentPage].subTitle
+            )
+            .id(currentPage)
+            .transition(
+                .asymmetric(
+                    insertion: .offset(
+                        x: isMovingForward ? 35 : -35
                     )
+                    .combined(with: .opacity),
+
+                    removal: .offset(
+                        x: isMovingForward ? -20 : 20
+                    )
+                    .combined(with: .opacity)
                 )
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .contentShape(Rectangle())
-                .gesture(
-                    DragGesture(minimumDistance: 30)
-                            .onEnded { value in
-                                let horizontal = value.translation.width
-
-                                guard abs(horizontal) > 50 else { return }
-
-                                if horizontal < 0 {
-                                    goToPage(currentPage + 1)
-                                } else {
-                                    goToPage(currentPage - 1)
-                                }
-                            }
-                )
-
-            }
+            )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .navigationDestination(isPresented: $navigateToAuth) {
-                AuthNavigator()
-            }
-            .safeAreaInset(edge: .bottom) {
-                bottomButton
-            }
+            .contentShape(Rectangle())
+            .gesture(
+                DragGesture(minimumDistance: 30)
+                        .onEnded { value in
+                            let horizontal = value.translation.width
+
+                            guard abs(horizontal) > 50 else { return }
+
+                            if horizontal < 0 {
+                                goToPage(currentPage + 1)
+                            } else {
+                                goToPage(currentPage - 1)
+                            }
+                        }
+            )
+
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            bottomButton
         }
     }
 
@@ -156,7 +152,7 @@ struct OnboardingView: View {
     
     private func handleButtonTap() {
         if isLastPage {
-            navigateToAuth = true
+            onGetStarted()
             return
         }
 
@@ -176,11 +172,7 @@ struct OnboardingView: View {
     }
 }
 
-#Preview {
-    OnboardingView()
-}
-
 
 #Preview {
-    OnboardingView()
+    OnboardingView {}
 }
