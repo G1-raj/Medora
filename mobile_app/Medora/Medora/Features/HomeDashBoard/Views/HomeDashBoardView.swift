@@ -24,6 +24,9 @@ struct HomeDashBoardView: View {
                             noOfDosesTaken: 2,
                             totalNoOfDoses: 3
                         )
+                        .padding(.bottom, 20)
+                        
+                        nextDose
                     }
                     .padding(.horizontal, 24)
                     .padding(.top, 32)
@@ -90,6 +93,26 @@ struct HomeDashBoardView: View {
         .clipShape(
             RoundedRectangle(cornerRadius: 18)
         )
+    }
+    
+    private var nextDose: some View {
+        VStack(spacing: 10) {
+            HStack {
+                Text("Next Dose")
+                    .bold()
+                    .foregroundStyle(.black)
+                
+                Spacer()
+                
+                //navigate to see all the doses
+                TextButton(text: "See All") {
+                    
+                }
+            }
+            
+            //card to show next dose
+            DoseCard()
+        }
     }
 }
 
