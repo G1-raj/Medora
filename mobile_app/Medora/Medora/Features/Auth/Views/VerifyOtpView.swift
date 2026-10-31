@@ -10,8 +10,10 @@ import SwiftUI
 struct VerifyOtpView: View {
     
     @State private var otp: String = ""
-    let email: String
+    @State private var isLoading: Bool = false
+    @State private var formErrors: VerifyOtpFormErrors = VerifyOtpFormErrors()
     
+    let email: String
     var onVerifyOtp: () -> Void
     
     var body: some View {
@@ -22,8 +24,8 @@ struct VerifyOtpView: View {
                 
                 otpField
                 
-                AppButton(label: "Verify Otp") {
-                    onVerifyOtp()
+                AppButton(label: "Verify Otp", isLoading: isLoading) {
+                    verifyOtp()
                 }
                 
                 resendTimer
@@ -57,13 +59,56 @@ struct VerifyOtpView: View {
    }
     
     private var otpField: some View {
-        OtpField(
-            otp: $otp
-        )
+        VStack(spacing: 6) {
+            OtpField(
+                otp: $otp
+            )
+            .onChange(of: otp) {
+                formErrors.otp = nil
+            }
+            
+            if let error = formErrors.otp {
+                validationMessage(error)
+            }
+        }
     }
     
     private var resendTimer: some View {
         VStack{}
+    }
+    
+    private func validationMessage(_ message: String) -> some View {
+        Label(message, systemImage: "exclamationmark.circle.fill")
+            .font(.caption)
+            .foregroundStyle(.red)
+    }
+    
+    private func verifyOtp() {
+        guard !isLoading else {
+            return
+        }
+        
+        let errors = VerifyOtpValidator.validate(otp: otp)
+        
+        formErrors = errors
+        guard !errors.hasErrors else {
+            return
+        }
+        
+        
+        Task {
+            isLoading = true
+            
+            defer {
+                isLoading = false
+            }
+            
+            try? await Task.sleep(for: .seconds(2))
+
+            onVerifyOtp()
+        }
+
+        
     }
 }
 

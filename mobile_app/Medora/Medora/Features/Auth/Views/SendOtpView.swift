@@ -10,6 +10,11 @@ import SwiftUI
 struct SendOtpView: View {
     
     @State private var email: String = ""
+    @State private var isLoading: Bool = false
+    @State private var formErrors: SendOtpFormErrors = SendOtpFormErrors()
+    
+    
+    
     var onSendOtp: (String) -> Void
     
     var body: some View {
@@ -19,8 +24,8 @@ struct SendOtpView: View {
                 
                 inputField
                 
-                AppButton(label: "Send Otp") {
-                    onSendOtp(email)
+                AppButton(label: "Send Otp", isLoading: isLoading) {
+                    sendOtp()
                 }
             }
             .padding(.horizontal, 24)
@@ -47,13 +52,60 @@ struct SendOtpView: View {
        .frame(maxWidth: .infinity, alignment: .leading)
    }
     
+    
    private var inputField: some View {
-        TextFormField(
-            label: "Email",
-            hintText: "Enter your email",
-            fieldType: .email,
-            text: $email
-        )
+       VStack(spacing: 6) {
+           TextFormField(
+               label: "Email",
+               hintText: "Enter your email",
+               fieldType: .email,
+               text: $email
+           )
+           .onChange(of: email) {
+               formErrors.email = nil
+           }
+           
+           if let error = formErrors.email {
+                validationMessage(error)
+           }
+           
+           
+       }
+    }
+    
+    private func validationMessage(_ message: String) -> some View {
+        Label(message, systemImage: "exclamationmark.circle.fill")
+            .font(.caption)
+            .foregroundStyle(.red)
+    }
+    
+    private func sendOtp() {
+        guard !isLoading else {
+            return
+        }
+        
+        let errors = SendOtpValidator.validate(email: email)
+        
+        formErrors = errors
+        guard !errors.hasErrors else {
+            return
+        }
+        
+        let normalizedEmail = email
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+        
+        Task {
+            isLoading = true
+            
+            defer {
+                isLoading = false
+            }
+            
+            try? await Task.sleep(for: .seconds(2))
+
+            onSendOtp(email)
+        }
     }
 }
 

@@ -11,9 +11,10 @@ struct ChangePasswordView: View {
     
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
+    @State private var isLoading: Bool = false
+    @State private var formErrors: ChangePasswordFormErrors = ChangePasswordFormErrors()
     
     let email: String
-    
     var onPasswordChanged: () -> Void
     
     var body: some View {
@@ -24,8 +25,8 @@ struct ChangePasswordView: View {
                 
                 formFields
                 
-                AppButton(label: "Reset Password") {
-                    onPasswordChanged()
+                AppButton(label: "Reset Password", isLoading: isLoading) {
+                    changePassword()
                 }
             }
             .padding(.horizontal, 24)
@@ -61,6 +62,13 @@ struct ChangePasswordView: View {
                 fieldType: .password,
                 text: $password
             )
+            .onChange(of: password) {
+                formErrors.password = nil
+            }
+            
+            if let error = formErrors.password {
+                validationMessage(error)
+            }
             
             TextFormField(
                 label: "Confirm Password",
@@ -68,6 +76,47 @@ struct ChangePasswordView: View {
                 fieldType: .password,
                 text: $confirmPassword
             )
+            .onChange(of: confirmPassword) {
+                formErrors.confirmPassword = nil
+            }
+            
+            if let error = formErrors.confirmPassword {
+                validationMessage(error)
+            }
+        }
+    }
+    
+    private func validationMessage(_ message: String) -> some View {
+        Label(message, systemImage: "exclamationmark.circle.fill")
+            .font(.caption)
+            .foregroundStyle(.red)
+    }
+    
+    private func changePassword() {
+        guard !isLoading else {
+            return
+        }
+        
+        let errors = ChangePasswordValidator.validate(
+            password: password,
+            confirmPassword: confirmPassword
+        )
+        
+        formErrors = errors
+        guard !errors.hasErrors else {
+            return
+        }
+        
+        Task {
+            isLoading = true
+            
+            defer {
+                isLoading = false
+            }
+            
+            try? await Task.sleep(for: .seconds(2))
+
+            onPasswordChanged()
         }
     }
 }
