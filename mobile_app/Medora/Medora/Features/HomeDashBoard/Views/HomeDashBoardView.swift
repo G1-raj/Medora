@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct HomeDashBoardView: View {
+    
+    
+    @State private var isScreenEmpty: Bool = false
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -18,15 +22,11 @@ struct HomeDashBoardView: View {
                 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 8) {
-                        calender
-                        
-                        DayProgressCard(
-                            noOfDosesTaken: 2,
-                            totalNoOfDoses: 3
-                        )
-                        .padding(.bottom, 20)
-                        
-                        nextDose
+                        if isScreenEmpty {
+                            emptyState
+                        } else {
+                            mainBody
+                        }
                     }
                     .padding(.horizontal, 24)
                     .padding(.top, 32)
@@ -46,6 +46,31 @@ struct HomeDashBoardView: View {
                     .frame(width: 250, height: 250)
                     .ignoresSafeArea()
             }
+        }
+    }
+    
+    
+    private var emptyState: some View {
+        VStack {}
+    }
+    
+    private var mainBody: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            calender
+            
+            DayProgressCard(
+                noOfDosesTaken: 2,
+                totalNoOfDoses: 3
+            )
+            .padding(.bottom, 20)
+            
+            nextDose
+                .padding(.bottom, 20)
+            
+            todaysMedication
+                .padding(.bottom, 20)
+            
+            insightButtons
         }
     }
     
@@ -114,7 +139,102 @@ struct HomeDashBoardView: View {
             DoseCard()
         }
     }
-}
+    
+    private var todaysMedication: some View {
+        VStack(spacing: 10) {
+            HStack {
+                Text("Today's Medications")
+                    .bold()
+                    .foregroundStyle(.black)
+                
+                Spacer()
+                
+                Text("3 total")
+                    .foregroundStyle(.gray)
+            }
+            
+            //card to show today's all medication
+            DayMedicationCard()
+            
+        }
+
+    }
+    
+    private var insightButtons: some View {
+        HStack(spacing: 12) {
+            insightButton(
+                icon: "calendar",
+                label: "Refill Reminders",
+                subLabel: "2 medications",
+                onTap: {}
+            )
+
+            insightButton(
+                icon: "chart.bar.fill",
+                label: "Health Insights",
+                subLabel: "View your progress",
+                onTap: {}
+            )
+        }
+    }
+    
+    private func insightButton(
+        icon: String,
+        label: String,
+        subLabel: String,
+        onTap: @escaping () -> Void
+    ) -> some View {
+        Button(action: onTap) {
+            HStack(spacing: 10) {
+
+                // Icon
+                Image(systemName: icon)
+                    .font(.system(size: 19, weight: .semibold))
+                    .foregroundStyle(.themeAccent)
+                    .frame(width: 44, height: 44)
+                    .background(.themeAccent.opacity(0.12))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+
+                // Text details
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(label)
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(.primary)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+
+                    Text(subLabel)
+                        .font(.system(size: 11))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+                }
+
+                Spacer(minLength: 0)
+
+                // Chevron
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(.gray.opacity(0.7))
+            }
+            .padding(12)
+            .frame(maxWidth: .infinity, minHeight: 76)
+            .background(.white)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .overlay {
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(.black.opacity(0.05), lineWidth: 1)
+            }
+            .shadow(
+                color: .black.opacity(0.05),
+                radius: 8,
+                x: 0,
+                y: 3
+            )
+            .contentShape(RoundedRectangle(cornerRadius: 16))
+        }
+        .buttonStyle(.plain)
+    }}
 
 #Preview {
     HomeDashBoardView()
