@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct MyMedicationCard: View {
+    
+    @State private var showOptions = false
+    @State private var showDeleteAlert = false
+    
     var body: some View {
         HStack(alignment: .top,spacing: 12) {
             //image
@@ -94,9 +98,17 @@ struct MyMedicationCard: View {
                             Capsule()
                         )
                     
-                    Image(systemName: "ellipsis")
-                        .rotationEffect(.degrees(90))
-                        .font(.title3)
+                    Button {
+                        showOptions = true
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .rotationEffect(.degrees(90))
+                            .font(.title3)
+                            .foregroundStyle(.gray)
+                            .frame(width: 32, height: 32)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
                 }
                 
                 
@@ -120,6 +132,34 @@ struct MyMedicationCard: View {
             x: 0,
             y: 4
         )
+        .confirmationDialog(
+            "Medication Options",
+            isPresented: $showOptions,
+            titleVisibility: .visible
+        ) {
+            Button("Edit Medication") {
+                // Navigate to edit screen
+            }
+
+            Button("Mark as Inactive") {
+                // Update medication status
+            }
+
+            Button("Delete Medication", role: .destructive) {
+                showDeleteAlert = true
+            }
+
+            Button("Cancel", role: .cancel) {}
+        }
+        .alert("Delete Medication?", isPresented: $showDeleteAlert) {
+            Button("Cancel", role: .cancel) {}
+
+            Button("Delete", role: .destructive) {
+                // Delete medication
+            }
+        } message: {
+            Text("Are you sure you want to delete this medication?")
+        }
     }
 }
 
