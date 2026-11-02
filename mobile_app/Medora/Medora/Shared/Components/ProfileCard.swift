@@ -15,6 +15,8 @@ struct ProfileCard: View {
     let userName: String
     let userEmail: String
 
+    var onEditProfile: () -> Void = {}
+
     private let imageUrl = URL(
         string: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtGBO7-ORjBhGi-57w0He9t1qmNb3CFAARurOE8UkngDZN-RxxZse28nDV&s=10"
     )
@@ -23,30 +25,37 @@ struct ProfileCard: View {
     @State private var selectedPhoto: PhotosPickerItem?
 
     @State private var showOptions = false
-    @State private var showCamera = false
     @State private var showGallery = false
+    @State private var showCamera = false
+    @State private var isLoadingImage = false
+
+    private let backgroundColor = Color(
+        red: 240 / 255,
+        green: 246 / 255,
+        blue: 237 / 255
+    )
 
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 0) {
             profileHeader
         }
         .frame(maxWidth: .infinity)
-        .padding(15)
-        .background(cardBackground)
-        .clipShape(RoundedRectangle(cornerRadius: 18))
+        .background(backgroundColor)
+        .clipShape(RoundedRectangle(cornerRadius: 22))
         .overlay {
-            RoundedRectangle(cornerRadius: 18)
+            RoundedRectangle(cornerRadius: 22)
                 .stroke(.black.opacity(0.04), lineWidth: 1)
         }
         .shadow(
-            color: .black.opacity(0.08),
+            color: .black.opacity(0.045),
             radius: 12,
             x: 0,
-            y: 4
+            y: 5
         )
         .confirmationDialog(
-            "Change Profile Picture",
-            isPresented: $showOptions
+            "Profile Picture",
+            isPresented: $showOptions,
+            titleVisibility: .visible
         ) {
             Button("Choose from Gallery") {
                 showGallery = true
@@ -57,6 +66,8 @@ struct ProfileCard: View {
             }
 
             Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Choose how you want to update your profile picture.")
         }
         .photosPicker(
             isPresented: $showGallery,
@@ -71,69 +82,84 @@ struct ProfileCard: View {
         }
     }
 
-    // MARK: - Profile Header
+    // MARK: - Header
 
     private var profileHeader: some View {
         ZStack {
-            cardBackground
+            decorativeBackground
 
-            leafImages
+            VStack(spacing: 12) {
+                profileImage
 
-            profileContent
+                VStack(spacing: 5) {
+                    Text(userName)
+                        .font(.system(size: 21, weight: .bold))
+                        .foregroundStyle(.black)
+                        .lineLimit(1)
+
+                    Text(userEmail)
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
+
+                editProfileButton
+                    .padding(.top, 5)
+            }
+            .padding(.vertical, 28)
+            .padding(.horizontal, 16)
         }
+        .frame(maxWidth: .infinity)
+        .clipped()
     }
 
-    // MARK: - Background
+    // MARK: - Decorative Background
 
-    private var cardBackground: some View {
-        Color(
-            red: 240.0 / 255.0,
-            green: 246.0 / 255.0,
-            blue: 237.0 / 255.0
-        )
-    }
+    private var decorativeBackground: some View {
+        GeometryReader { geometry in
+            ZStack {
+                Circle()
+                    .fill(.white.opacity(0.25))
+                    .frame(width: 180, height: 180)
+                    .offset(
+                        x: geometry.size.width / 2,
+                        y: -geometry.size.height / 2
+                    )
 
-    // MARK: - Leaf Images
+                Image("left_leaf")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 110)
+                    .opacity(0.55)
+                    .rotationEffect(.degrees(-10))
+                    .offset(
+                        x: -geometry.size.width / 2 + 30,
+                        y: geometry.size.height / 2 - 15
+                    )
 
-    private var leafImages: some View {
-        ZStack {
-            Image("left_leaf")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 120, height: 80)
-                .offset(x: -120, y: 50)
-
-            Image("right_leaf")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 120, height: 80)
-                .rotationEffect(.degrees(-30))
-                .offset(x: 120, y: -50)
+                Image("right_leaf")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 105)
+                    .opacity(0.55)
+                    .rotationEffect(.degrees(-30))
+                    .offset(
+                        x: geometry.size.width / 2 - 25,
+                        y: -geometry.size.height / 2 + 25
+                    )
+            }
+            .frame(
+                width: geometry.size.width,
+                height: geometry.size.height
+            )
         }
-    }
-
-    // MARK: - Profile Content
-
-    private var profileContent: some View {
-        VStack(spacing: 12) {
-            profileImage
-
-            Text(userName)
-                .font(.title)
-                .foregroundStyle(.black)
-                .bold()
-
-            Text(userEmail)
-                .foregroundStyle(.gray)
-        }
-        .padding(.vertical, 30)
+        .allowsHitTesting(false)
     }
 
     // MARK: - Profile Image
 
     private var profileImage: some View {
         ZStack(alignment: .bottomTrailing) {
-
             Group {
                 if let selectedImage {
                     Image(uiImage: selectedImage)
@@ -143,18 +169,34 @@ struct ProfileCard: View {
                     remoteImage
                 }
             }
-            .frame(width: 150, height: 150)
+            .frame(width: 116, height: 116)
             .clipShape(Circle())
+            .padding(5)
+            .background(.white)
+            .clipShape(Circle())
+            .shadow(
+                color: .black.opacity(0.10),
+                radius: 8,
+                x: 0,
+                y: 3
+            )
 
             Button {
                 showOptions = true
             } label: {
                 Image(systemName: "camera.fill")
+                    .font(.system(size: 14, weight: .semibold))
                     .foregroundStyle(.white)
-                    .frame(width: 50, height: 50)
+                    .frame(width: 36, height: 36)
                     .background(.themeAccent)
                     .clipShape(Circle())
+                    .overlay {
+                        Circle()
+                            .stroke(.white, lineWidth: 3)
+                    }
             }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Change profile picture")
         }
     }
 
@@ -162,33 +204,78 @@ struct ProfileCard: View {
 
     private var remoteImage: some View {
         AsyncImage(url: imageUrl) { phase in
-
-            if let image = phase.image {
+            switch phase {
+            case .success(let image):
                 image
                     .resizable()
                     .scaledToFill()
-            } else if phase.error != nil {
-                Image(systemName: "person.crop.circle.fill")
-                    .resizable()
-                    .foregroundStyle(.gray)
-            } else {
+
+            case .failure:
+                placeholderImage
+
+            case .empty:
                 ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(.gray.opacity(0.08))
+
+            @unknown default:
+                placeholderImage
             }
         }
+    }
+
+    private var placeholderImage: some View {
+        Image(systemName: "person.crop.circle.fill")
+            .resizable()
+            .scaledToFit()
+            .foregroundStyle(.gray.opacity(0.5))
+            .padding(15)
+            .background(.gray.opacity(0.08))
+    }
+
+    // MARK: - Edit Profile
+
+    private var editProfileButton: some View {
+        Button(action: onEditProfile) {
+            HStack(spacing: 7) {
+                Image(systemName: "pencil")
+                    .font(.system(size: 11, weight: .semibold))
+
+                Text("Edit Profile")
+                    .font(.system(size: 12, weight: .semibold))
+            }
+            .foregroundStyle(.themeAccent)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 9)
+            .background(.white.opacity(0.85))
+            .clipShape(Capsule())
+        }
+        .buttonStyle(.plain)
     }
 
     // MARK: - Load Gallery Image
 
     private func loadSelectedImage(_ photo: PhotosPickerItem?) {
-        Task {
-            guard let data = try? await photo?.loadTransferable(
-                type: Data.self
-            ),
-            let image = UIImage(data: data) else {
-                return
-            }
+        guard let photo else { return }
 
-            selectedImage = image
+        Task {
+            isLoadingImage = true
+            defer { isLoadingImage = false }
+
+            do {
+                guard let data = try await photo.loadTransferable(
+                    type: Data.self
+                ),
+                let image = UIImage(data: data) else {
+                    return
+                }
+
+                await MainActor.run {
+                    selectedImage = image
+                }
+            } catch {
+                print("Failed to load profile image: \(error)")
+            }
         }
     }
 }
