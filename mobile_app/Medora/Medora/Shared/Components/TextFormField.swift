@@ -20,6 +20,7 @@ struct TextFormField: View {
         case email
         case username
         case password
+        case empty
         
         var icon: String {
             switch self {
@@ -31,6 +32,9 @@ struct TextFormField: View {
                 
             case .password:
                 return "lock"
+                
+            case .empty:
+                return ""
             }
         }
     }
@@ -44,9 +48,12 @@ struct TextFormField: View {
                 .foregroundStyle(.black)
             
             HStack(spacing: 10) {
-                       
-               Image(systemName: fieldType.icon)
-                   .foregroundStyle(.gray)
+                
+                if fieldType != .empty {
+                    Image(systemName: fieldType.icon)
+                        .foregroundStyle(.gray)
+                }
+               
                
                Group {
                    if fieldType == .password && !isPasswordVisible {

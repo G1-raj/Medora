@@ -34,8 +34,16 @@ struct AddMedicatonView: View {
                 .padding(.bottom, 8)
             
             ScrollView {
-                VStack {
+                VStack(spacing: 18) {
                     imageSection
+                    
+                    TextFormField(
+                        label: "Medication Name",
+                        hintText: "e.g. Metformin",
+                        fieldType: .empty,
+                        text: $medicationName
+                    )
+                    
                 }
                 .padding(.horizontal, 24)
                 .padding(.top, 32)
