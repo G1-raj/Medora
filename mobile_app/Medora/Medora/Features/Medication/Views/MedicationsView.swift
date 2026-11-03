@@ -23,30 +23,32 @@ struct MedicationsView: View {
     ]
     
     var body: some View {
-        VStack(spacing: 0) {
-            
-            header
-                .padding(.horizontal, 24)
-                .padding(.top, 12)
-                .padding(.bottom, 8)
-            
-            ScrollView {
-                VStack(alignment: .leading, spacing: 8) {
-                    if isScreenEmpty {
-                        emptyState
-                    } else {
-                        mainBody
+        NavigationStack {
+            VStack(spacing: 0) {
+                
+                header
+                    .padding(.horizontal, 24)
+                    .padding(.top, 12)
+                    .padding(.bottom, 8)
+                
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 8) {
+                        if isScreenEmpty {
+                            emptyState
+                        } else {
+                            mainBody
+                        }
                     }
+                    .padding(.horizontal, 24)
+                    .padding(.top, 32)
+                    .padding(.bottom, 24)
+                    .frame(maxWidth: 500)
+                    .frame(maxWidth: .infinity)
                 }
-                .padding(.horizontal, 24)
-                .padding(.top, 32)
-                .padding(.bottom, 24)
-                .frame(maxWidth: 500)
-                .frame(maxWidth: .infinity)
+                .scrollDismissesKeyboard(.interactively)
+                .background(.background)
+                .toolbar(.hidden, for: .navigationBar)
             }
-            .scrollDismissesKeyboard(.interactively)
-            .background(.background)
-            .toolbar(.hidden, for: .navigationBar)
         }
     }
     
@@ -67,8 +69,8 @@ struct MedicationsView: View {
                 
                 Spacer()
                 
-                Button {
-                    
+                NavigationLink {
+                    AddMedicatonView()
                 } label: {
                     Image(systemName: "plus")
                         .padding(10)

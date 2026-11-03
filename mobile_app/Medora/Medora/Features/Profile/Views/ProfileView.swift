@@ -50,8 +50,8 @@ struct ProfileView: View {
 
             Spacer()
 
-            Button {
-                // Navigate to settings
+            NavigationLink {
+                SettingsView()
             } label: {
                 Image(systemName: "gearshape")
                     .font(.system(size: 19, weight: .semibold))
