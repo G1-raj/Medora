@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SettingsView: View {
     
+    @Environment(\.dismiss) private var dismiss
+    
     
     @State private var isMedicationReminderOn: Bool = false
     @State private var isRefillReminderOn: Bool = false
@@ -55,7 +57,7 @@ struct SettingsView: View {
             HStack {
                 
                 Button {
-                    
+                    dismiss()
                 } label: {
                     Image(systemName: "chevron.left")
                         .foregroundStyle(.black)
