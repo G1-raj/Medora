@@ -1,84 +1,16 @@
 //
-//  AddMedicatonView.swift
+//  AddMedicationViewExtension.swift
 //  Medora
 //
-//  Created by Govine Rajput on 03/11/26.
+//  Created by Govine Rajput on 04/11/26.
 //
 
 import SwiftUI
 
 
-
-//TODO: Update the view for Update Medications
-
-
-struct AddMedicatonView: View {
-
-    @Environment(\.dismiss) private var dismiss
-
-
-    @State private var medicationName = ""
-    @State private var medicationComposition = ""
-    @State private var medicationPower = ""
-    @State private var medicationUnit = "mg"
-
-    @State private var medicationForm: MedicationForm = .tablet
-
-    @State private var medicationDirection = ""
-    @State private var explainSickness = ""
-
-    @State private var startDate: Date? = Date()
-    @State private var endDate: Date? = nil
-
-    @State private var notes = ""
-
-    // MARK: - Constants
-
-    private let units = [
-        "mcg", "µg", "mg", "g",
-        "mL", "mg/mL", "mcg/mL",
-        "mg/5 mL", "%", "IU",
-        "mEq", "mmol", "Units"
-    ]
-
-
-    var body: some View {
-        VStack(spacing: 0) {
-
-            header
-
-            ScrollView {
-                VStack(spacing: 22) {
-
-                    imageSection
-
-                    medicationDetailsSection
-
-                    medicationInstructionsSection
-
-                    dateSection
-
-                    notesSection
-                }
-                .padding(.horizontal, 24)
-                .padding(.top, 28)
-                .padding(.bottom, 24)
-                .background(.white)
-                .frame(maxWidth: 500)
-                .frame(maxWidth: .infinity)
-            }
-            .scrollDismissesKeyboard(.interactively)
-            .background(Color(.systemGroupedBackground))
-        }
-        .background(.white)
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-            bottomAction
-        }
-        .toolbar(.hidden, for: .navigationBar)
-    }
-
-
-    private var header: some View {
+//extension for views
+extension AddMedicationView {
+    var header: some View {
         ZStack {
             Text("Add Medication")
                 .font(.title3)
@@ -107,7 +39,7 @@ struct AddMedicatonView: View {
     }
 
 
-    private var imageSection: some View {
+    var imageSection: some View {
         VStack(spacing: 10) {
 
             Image("capsule_tablet")
@@ -127,7 +59,7 @@ struct AddMedicatonView: View {
     }
 
 
-    private var medicationDetailsSection: some View {
+    var medicationDetailsSection: some View {
         VStack(spacing: 18) {
 
             TextFormField(
@@ -151,7 +83,7 @@ struct AddMedicatonView: View {
     }
 
 
-    private var strengthField: some View {
+    var strengthField: some View {
         VStack(alignment: .leading, spacing: 6) {
 
             fieldLabel("Strength")
@@ -166,7 +98,7 @@ struct AddMedicatonView: View {
     }
 
 
-    private var medicationFormSelector: some View {
+    var medicationFormSelector: some View {
         VStack(alignment: .leading, spacing: 6) {
 
             fieldLabel("Medication Form")
@@ -178,7 +110,7 @@ struct AddMedicatonView: View {
     }
 
 
-    private var medicationInstructionsSection: some View {
+    var medicationInstructionsSection: some View {
         VStack(spacing: 18) {
 
             inputField(
@@ -196,7 +128,7 @@ struct AddMedicatonView: View {
     }
 
 
-    private var dateSection: some View {
+    var dateSection: some View {
         VStack(spacing: 18) {
 
             DateInputField(
@@ -213,7 +145,7 @@ struct AddMedicatonView: View {
     }
 
 
-    private var notesSection: some View {
+    var notesSection: some View {
         inputField(
             label: "Notes (Optional)",
             hintText: "Add any additional notes",
@@ -223,7 +155,7 @@ struct AddMedicatonView: View {
 
 
 
-    private var bottomAction: some View {
+    var bottomAction: some View {
         VStack(spacing: 0) {
 
             AppButton(label: "Add Medication") {
@@ -285,8 +217,10 @@ struct AddMedicatonView: View {
         }
         .frame(maxWidth: .infinity)
     }
+}
 
-
+//extension for functionality
+extension AddMedicationView {
     private func addMedication() {
 
         guard !medicationName.trimmingCharacters(
@@ -308,9 +242,4 @@ struct AddMedicatonView: View {
 
         // Save medication here
     }
-}
-
-
-#Preview {
-    AddMedicatonView()
 }
