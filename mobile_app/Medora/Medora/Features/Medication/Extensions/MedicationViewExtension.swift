@@ -25,7 +25,7 @@ extension MedicationsView {
                 Spacer()
                 
                 NavigationLink {
-                    AddMedicatonView()
+                    AddMedicationView()
                 } label: {
                     Image(systemName: "plus")
                         .padding(10)
