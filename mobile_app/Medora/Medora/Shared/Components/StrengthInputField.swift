@@ -8,34 +8,19 @@
 import SwiftUI
 
 
-import SwiftUI
-
 struct StrengthInputField: View {
 
     @Binding var strength: String
     @Binding var selectedUnit: String
 
-    let units = [
-        "mcg",
-        "µg",
-        "mg",
-        "g",
-        "mL",
-        "mg/mL",
-        "mcg/mL",
-        "mg/5 mL",
-        "%",
-        "IU",
-        "mEq",
-        "mmol",
-        "Units"
-   ]
+    var hintText: String
+    var units: [String]
 
     var body: some View {
         HStack(spacing: 0) {
 
             // Strength input
-            TextField("e.g. 500", text: $strength)
+            TextField(hintText, text: $strength)
                 .keyboardType(.decimalPad)
                 .padding(.horizontal, 14)
                 .frame(maxWidth: .infinity)
@@ -83,6 +68,7 @@ struct StrengthInputField: View {
 }
 
 
+
 #Preview {
     
     @Previewable @State var strength = ""
@@ -90,6 +76,9 @@ struct StrengthInputField: View {
     
     StrengthInputField(
         strength: $strength,
-        selectedUnit: $unit
+        selectedUnit: $unit,
+        
+        hintText: "Medication",
+        units: ["MG", "ML"]
     )
 }

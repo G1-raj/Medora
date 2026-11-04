@@ -91,7 +91,11 @@ struct TextFormField: View {
            .background(.white)
            .overlay {
                RoundedRectangle(cornerRadius: 15)
-                   .stroke(.gray, lineWidth: 1)
+                   .stroke(
+                    fieldType == .empty ? Color.gray.opacity(0.25) : .gray,
+                    lineWidth: 1
+                   )
+               
            }
         }
         .frame(maxWidth: .infinity)
