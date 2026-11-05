@@ -8,11 +8,26 @@
 import SwiftUI
 
 struct RefillTrackerView: View {
+    
+    @Environment(\.dismiss) var dismiss
+    
+    @State var selectedTab = "All"
+    
+    let tabs = [
+        "All",
+        "Low",
+        "Refill Soon",
+        "Overdue"
+    ]
+    
     var body: some View {
         VStack(spacing: 0) {
+            
+            header
+            
             ScrollView {
                 VStack(spacing: 18) {
-                    
+                    mainBody
                 }
                 .padding(.horizontal, 24)
                 .padding(.top, 28)
