@@ -1,4 +1,4 @@
-import { User } from "../../generated/prisma/browser.js";
+import { User } from "../entities/user.entity.js";
 
 export interface IUserRepository {
     findByEmail(email: string): Promise<User | null>;
