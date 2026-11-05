@@ -21,6 +21,10 @@ struct HomeView: View {
                 MedicationsView()
             }
             
+            Tab("Insights", systemImage: "chart.xyaxis.line") {
+                InsightsView()
+            }
+            
             Tab("Profile", systemImage: "person") {
                 ProfileView()
             }
