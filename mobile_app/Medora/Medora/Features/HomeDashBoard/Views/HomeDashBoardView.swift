@@ -11,6 +11,7 @@ struct HomeDashBoardView: View {
     
     
     @State private var isScreenEmpty: Bool = false
+    @State var isNavigateToRefillTracker: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -45,6 +46,9 @@ struct HomeDashBoardView: View {
                     .clipped()
                     .frame(width: 250, height: 250)
                     .ignoresSafeArea()
+            }
+            .navigationDestination(isPresented: $isNavigateToRefillTracker) {
+                RefillTrackerView()
             }
         }
     }
