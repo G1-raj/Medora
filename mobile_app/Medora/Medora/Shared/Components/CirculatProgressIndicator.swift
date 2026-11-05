@@ -19,12 +19,14 @@ struct CirculatProgressIndicator: View {
         min(max(progress, 0), 1)
     }
     
+    var isInsightView: Bool = false
+    
     var body: some View {
         ZStack {
             //light background of progress indicator track
             Circle()
                 .stroke(
-                    .white.opacity(0.15),
+                    isInsightView ? .themeAccent.opacity(0.15) : .white.opacity(0.15),
                     style: StrokeStyle(lineWidth: lineWidth)
                 )
             
@@ -32,7 +34,7 @@ struct CirculatProgressIndicator: View {
             Circle()
                 .trim(from: 0, to: animatedProgress)
                 .stroke(
-                    .white,
+                    isInsightView ? .themeAccent : .white,
                     style: StrokeStyle(
                         lineWidth: lineWidth,
                         lineCap: .round

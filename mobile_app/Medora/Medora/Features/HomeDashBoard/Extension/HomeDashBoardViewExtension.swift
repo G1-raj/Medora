@@ -125,7 +125,9 @@ extension HomeDashBoardView {
                 icon: "calendar",
                 label: "Refill Reminders",
                 subLabel: "2 medications",
-                onTap: {}
+                onTap: {
+                    isNavigateToRefillTracker = true
+                }
             )
 
             insightButton(
