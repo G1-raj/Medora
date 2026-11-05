@@ -61,6 +61,8 @@ extension InsightsView {
             .frame(maxWidth: .infinity)
             
             AdherenceChartView(adherenceRate: 86)
+            
+            DoseOverviewView()
         }
     }
     
