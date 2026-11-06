@@ -2,7 +2,7 @@ import "dotenv/config";
 import app from "./app.js";
 import { prisma } from "./config/database.js";
 
-const PORT = Number(process.env.PORT ?? 3000);
+const PORT = Number(process.env.PORT ?? 4000);
 
 async function bootstrap() {
   try {

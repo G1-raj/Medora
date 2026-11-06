@@ -28,7 +28,7 @@ export class AuthService {
         });
 
         const accessToken = this.tokenService.generateAccessToken({
-            userId: String(user.id),
+            userId: user.id,
             email: user.email,
             role: user.role
         });
@@ -53,7 +53,7 @@ export class AuthService {
         }
 
         const accessToken = this.tokenService.generateAccessToken({
-            userId: String(user.id),
+            userId: user.id,
             email: user.email,
             role: user.role
         });
