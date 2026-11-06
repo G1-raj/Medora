@@ -27,15 +27,8 @@ export class AuthService {
             password: hashedPassword
         });
 
-        const accessToken = this.tokenService.generateAccessToken({
-            userId: user.id,
-            email: user.email,
-            role: user.role
-        });
-
         return {
             user: this.toSafeUser(user),
-            accessToken
         }
     }
 
@@ -58,9 +51,16 @@ export class AuthService {
             role: user.role
         });
 
+        const refreshToken = this.tokenService.generateRefreshTOken({
+            userId: user.id,
+            email: user.email,
+            role: user.role
+        });
+
         return {
             user: this.toSafeUser(user),
-            accessToken
+            accessToken,
+            refreshToken
         };
     }
 
