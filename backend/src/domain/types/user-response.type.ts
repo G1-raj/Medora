@@ -1,5 +1,5 @@
-import { UserRole } from "./user.entity.js";
-import { ProfilePicture } from "./profile-picture.entity.js";
+import { UserRole } from "./user-role.type.js";
+import { ProfilePicture } from "../entities/profile-picture.entity.js";
 
 export interface UserResponse {
     id: number;
