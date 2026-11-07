@@ -1,4 +1,5 @@
-import { User } from "../../generated/prisma/browser.js";
+import { UpdatePassword } from "../entities/update-password.entity.js";
+import { User } from "../entities/user.entity.js";
 
 export interface IUserRepository {
     findByEmail(email: string): Promise<User | null>;
@@ -8,4 +9,9 @@ export interface IUserRepository {
         fullName: string,
         password: string
     }) : Promise<User>;
+
+    updatePassword(data: {
+        email: string,
+        password: string
+    }) : Promise<UpdatePassword>
 }
