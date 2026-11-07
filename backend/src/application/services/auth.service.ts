@@ -10,11 +10,13 @@ import { ChangePasswordDto } from "../dto/change-password.dto.js";
 import { generateOtp } from "../../infrastructure/services/otp.service.js";
 import { sendEmail } from "../../infrastructure/services/email.service.js";
 import { IOtpRepository } from "../../domain/interfaces/otp.repository.js";
+import { ITokenRepository } from "../../domain/interfaces/token.repository.js";
 
 export class AuthService {
     constructor(
         private readonly userRepository: IUserRepository,
         private readonly otpRepository: IOtpRepository,
+        private readonly tokenRepository: ITokenRepository,
         private readonly passwordHasher: IPasswordHasher,
         private readonly tokenService: ITokenService,
     ) {}
@@ -62,6 +64,13 @@ export class AuthService {
             userId: user.id,
             email: user.email,
             role: user.role
+        });
+
+        const refreshTokenHash = await this.passwordHasher.hash(refreshToken);
+
+        await this.tokenRepository.saveToken({
+            userId: user.id,
+            refreshToken: refreshTokenHash
         });
 
         return {
@@ -113,7 +122,11 @@ export class AuthService {
             throw new AppError("Invalid Otp", 400);
         }
 
-        await this.otpRepository.markOtpUsed({otpId: otpRecord.id});
+        const markedUsed = await this.otpRepository.markOtpUsed({otpId: otpRecord.id});
+
+        if (!markedUsed) {
+            throw new AppError("OTP already used or expired", 400);
+        }
 
         return "Otp verified successfully";
     }

@@ -12,5 +12,5 @@ export interface IOtpRepository {
 
     markOtpUsed(data: {
         otpId: number
-    }) : Promise<string>;
+    }) : Promise<boolean>;
 }

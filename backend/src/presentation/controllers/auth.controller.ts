@@ -97,7 +97,7 @@ export class AuthController {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
-        path: "/",
+        path: "/api/auth",
     });
 
     return res.status(200).json({

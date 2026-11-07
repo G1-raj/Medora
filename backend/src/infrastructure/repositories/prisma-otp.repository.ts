@@ -23,15 +23,18 @@ export class PrismaOtpRepository implements IOtpRepository {
                 expiresAt: {
                     gt: new Date()
                 }
+            },
+            orderBy: {
+                createdAt: "desc"
             }
         });
 
         return otpRecord;
     }
 
-    async markOtpUsed(data: { otpId: number; }): Promise<string> {
+    async markOtpUsed(data: { otpId: number; }): Promise<boolean> {
 
-        await prisma.otp.updateMany({
+        const result = await prisma.otp.updateMany({
             where: {
                 id: data.otpId,
                 used: false,
@@ -44,6 +47,6 @@ export class PrismaOtpRepository implements IOtpRepository {
             }
         });
 
-        return "otp marked used";
+        return result.count === 1;
     }
 }
