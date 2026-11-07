@@ -1,4 +1,4 @@
-import { UserRole } from "../entities/user.entity.js";
+import { UserRole } from "../types/user-role.type.js";
 
 export interface ITokenService {
     generateAccessToken(payload: {

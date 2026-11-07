@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken"
 import { ITokenService } from "../../domain/interfaces/token.services.js"
-import { UserRole } from "../../domain/entities/user.entity.js";
+import { UserRole } from "../../domain/types/user-role.type.js";
 
 export class JwtTokenService implements ITokenService {
   constructor(
