@@ -9,10 +9,12 @@ import { VerifyOtpDto } from "../dto/verify-otp.dto.js";
 import { ChangePasswordDto } from "../dto/change-password.dto.js";
 import { generateOtp } from "../../infrastructure/services/otp.service.js";
 import { sendEmail } from "../../infrastructure/services/email.service.js";
+import { IOtpRepository } from "../../domain/interfaces/otp.repository.js";
 
 export class AuthService {
     constructor(
         private readonly userRepository: IUserRepository,
+        private readonly otpRepository: IOtpRepository,
         private readonly passwordHasher: IPasswordHasher,
         private readonly tokenService: ITokenService,
     ) {}
@@ -22,7 +24,7 @@ export class AuthService {
 
         if(existingUser) {
             throw new AppError("User already exists", 409);
-        }
+        } 
 
         const hashedPassword = await this.passwordHasher.hash(data.password);
 
@@ -80,7 +82,7 @@ export class AuthService {
         const otp = generateOtp();
         const hashedOtp = await this.passwordHasher.hash(otp);
 
-        await this.userRepository.saveOtp({
+        await this.otpRepository.saveOtp({
             userId: user.id,
             otp: hashedOtp
         });
@@ -88,16 +90,51 @@ export class AuthService {
         //send otp through email
         await sendEmail(user.email, otp);
 
-        return "Email sent successfully"
+        return "Otp sent successfully"
 
     }
 
     async verifyOtp(data: VerifyOtpDto) {
+        const user = await this.userRepository.findByEmail(data.email);
 
+        if (!user) {
+            throw new AppError("Invalid email", 401);
+        }
+
+        const otpRecord = await this.otpRepository.readOtp({userId: user.id});
+
+        if(!otpRecord) {
+            throw new AppError("Invalid or Expired Otp", 400);
+        }
+
+        const isValidOtp = await this.passwordHasher.compare(data.otp, otpRecord.otpHash);
+
+        if(!isValidOtp) {
+            throw new AppError("Invalid Otp", 400);
+        }
+
+        await this.otpRepository.markOtpUsed({otpId: otpRecord.id});
+
+        return "Otp verified successfully";
     }
 
     async changePassword(data: ChangePasswordDto) {
+        const user = await this.userRepository.findByEmail(data.email);
 
+        if (!user) {
+            throw new AppError("Invalid email", 401);
+        }
+
+        const hashedPassword = await this.passwordHasher.hash(data.password);
+
+        const updatedUser = await this.userRepository.updatePassword({
+            email: user.email, 
+            password: hashedPassword
+        });
+
+        return {
+            updatedUser
+        }
     }
 
     private toSafeUser(user: {

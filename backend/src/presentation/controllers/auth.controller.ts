@@ -13,6 +13,20 @@ const loginSchema = z.object({
   password: z.string().min(1).max(128)
 });
 
+const sendOtpSchema = z.object({
+  email: z.string().trim().email().transform(v => v.toLowerCase()),
+});
+
+const verifyOtpSchema = z.object({
+  email: z.string().trim().email().transform(v => v.toLowerCase()),
+  otp: z.string().trim()
+});
+
+const changePasswordSchema = z.object({
+  email: z.string().trim().email().transform(v => v.toLowerCase()),
+  password: z.string().min(1).max(128)
+});
+
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -50,4 +64,46 @@ export class AuthController {
       }
     });
   };
+
+  sendOtp = async (req: Request, res: Response) => {
+    const input = sendOtpSchema.parse(req.body);
+
+    const result = await this.authService.sendOtp(input);
+
+    return res.status(200).json({
+      success: true,
+      message: result
+    });
+  }
+
+  verifyOtp = async (req: Request, res: Response) => {
+    const input = verifyOtpSchema.parse(req.body);
+
+    const result = await this.authService.verifyOtp(input);
+
+    return res.status(200).json({
+      success: true,
+      message: result
+    });
+
+  }
+
+  changePassword = async (req: Request, res: Response) => {
+    const input = changePasswordSchema.parse(req.body);
+
+    const result = await this.authService.changePassword(input);
+
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/",
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: result,
+      message: "Password changed successfully"
+    });
+  }
 }

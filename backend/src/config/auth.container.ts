@@ -1,4 +1,5 @@
 import { AuthService } from "../application/services/auth.service.js";
+import { PrismaOtpRepository } from "../infrastructure/repositories/prisma-otp.repository.js";
 import { PrismaUserRepository } from "../infrastructure/repositories/prisma-user.repository.js";
 import { Argon2PasswordHasher } from "../infrastructure/security/argon2-password-hasher.js";
 import { JwtTokenService } from "../infrastructure/security/jwt.token-service.js";
@@ -17,6 +18,8 @@ const refreshTokenExpiry = "7d"
 
 const userRepository = new PrismaUserRepository();
 
+const otpRepository = new PrismaOtpRepository();
+
 const passwordHasher = new Argon2PasswordHasher();
 
 const tokenService = new JwtTokenService(
@@ -28,6 +31,7 @@ const tokenService = new JwtTokenService(
 
 const authService = new AuthService(
   userRepository,
+  otpRepository,
   passwordHasher,
   tokenService
 );

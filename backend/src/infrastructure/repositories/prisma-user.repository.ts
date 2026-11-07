@@ -1,6 +1,8 @@
 import { prisma } from "../../config/database.js";
 import { IUserRepository } from "../../domain/interfaces/user.repository.js";
 import { User } from "../../domain/entities/user.entity.js";
+import { UpdatePassword } from "../../domain/entities/update-password.entity.js";
+
 
 export class PrismaUserRepository implements IUserRepository {
 
@@ -42,15 +44,23 @@ export class PrismaUserRepository implements IUserRepository {
         return this.toDomain(user);
     }
 
-    async saveOtp(data: { userId: number; otp: string }): Promise<string> {
-        await prisma.otp.create({
+    async updatePassword(data: { email: string; password: string; }): Promise<UpdatePassword> {
+        const update = await prisma.user.update({
+            where: {
+                email: data.email
+            },
             data: {
-                userId: data.userId,
-                otpHash: data.otp,
-                expiresAt: new Date(Date.now() + 15 * 60 * 1000), //expire in 15 minutes
+                password: data.password
+            }, 
+            select: {
+                id: true,
+                email: true,
+                fullName: true,
+                createdAt: true,
+                updatedAt: true
             }
         });
 
-        return "Otp is saved";
+        return update;
     }
 }

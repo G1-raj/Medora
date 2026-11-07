@@ -1,3 +1,4 @@
+import { UpdatePassword } from "../entities/update-password.entity.js";
 import { User } from "../entities/user.entity.js";
 
 export interface IUserRepository {
@@ -9,8 +10,8 @@ export interface IUserRepository {
         password: string
     }) : Promise<User>;
 
-    saveOtp(data: {
-        userId: number,
-        otp: string
-    }) : Promise<string>;
+    updatePassword(data: {
+        email: string,
+        password: string
+    }) : Promise<UpdatePassword>
 }

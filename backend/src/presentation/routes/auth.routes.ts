@@ -6,6 +6,9 @@ export function createAuthRoutes(controller: AuthController) {
 
   router.post("/signup", controller.signup);
   router.post("/login", controller.login);
+  router.post("/forgot-password/send-otp", controller.sendOtp);
+  router.post("/forgot-password/verify-otp", controller.verifyOtp);
+  router.post("/forgot-password/change-password", controller.changePassword);
 
   return router;
 }
