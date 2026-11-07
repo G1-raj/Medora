@@ -41,4 +41,16 @@ export class PrismaUserRepository implements IUserRepository {
 
         return this.toDomain(user);
     }
+
+    async saveOtp(data: { userId: number; otp: string }): Promise<string> {
+        await prisma.otp.create({
+            data: {
+                userId: data.userId,
+                otpHash: data.otp,
+                expiresAt: new Date(Date.now() + 15 * 60 * 1000), //expire in 15 minutes
+            }
+        });
+
+        return "Otp is saved";
+    }
 }

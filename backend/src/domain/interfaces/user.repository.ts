@@ -8,4 +8,9 @@ export interface IUserRepository {
         fullName: string,
         password: string
     }) : Promise<User>;
+
+    saveOtp(data: {
+        userId: number,
+        otp: string
+    }) : Promise<string>;
 }
