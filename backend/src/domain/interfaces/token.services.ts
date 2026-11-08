@@ -12,4 +12,10 @@ export interface ITokenService {
         email: string,
         role: UserRole
     }): string;
+
+    verifyRefreshToken(token: string): {
+        userId: number;
+        email: string;
+        role: UserRole;
+    };
 }
