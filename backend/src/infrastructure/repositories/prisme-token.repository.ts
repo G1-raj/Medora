@@ -25,4 +25,28 @@ export class PrismaTokenRepository implements ITokenRepository {
 
         return sessions;
     }
+
+    async revokeSession(data: { sessionId: number; }): Promise<void> {
+        await prisma.session.delete({
+            where: {
+                id: data.sessionId
+            }
+        });
+    }
+
+    async updateRefreshToken(data: { sessionId: number; refreshToken: string; }): Promise<void> {
+        const expiresAt = new Date(
+            Date.now() + 7 * 24 * 60 * 60 * 1000
+        );
+
+        await prisma.session.update({
+            where: {
+                id: data.sessionId
+            },
+            data: {
+                refreshToken: data.refreshToken,
+                expiresAt
+            }
+        });
+    }
 } 
