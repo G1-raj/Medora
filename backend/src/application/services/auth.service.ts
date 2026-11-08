@@ -11,6 +11,7 @@ import { generateOtp } from "../../infrastructure/services/otp.service.js";
 import { sendEmail } from "../../infrastructure/services/email.service.js";
 import { IOtpRepository } from "../../domain/interfaces/otp.repository.js";
 import { ITokenRepository } from "../../domain/interfaces/token.repository.js";
+import { RefreshTokenDto } from "../dto/refresh-token.dto.js";
 
 export class AuthService {
     constructor(
@@ -78,6 +79,22 @@ export class AuthService {
             accessToken,
             refreshToken
         };
+    }
+
+    async refreshToken(data: RefreshTokenDto) {
+
+
+        const decoded = this.tokenService.verifyRefreshToken(data.refreshToken);
+
+        const user = await this.userRepository.findByEmail(decoded.email);
+
+        if (!user || user.id !== decoded.userId) {
+            throw new AppError("Invalid refresh token", 401);
+        }
+
+        const refreshTokenHash = await this.passwordHasher.hash(data.refreshToken);
+
+        
     }
 
     async sendOtp(data: SendEmailDto) {
