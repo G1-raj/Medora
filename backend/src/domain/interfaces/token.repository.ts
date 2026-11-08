@@ -9,4 +9,13 @@ export interface ITokenRepository {
     getAllActiveSessions(data: {
         userId: number,
     }) : Promise<Session[]>
+
+    revokeSession(data: {
+        sessionId: number;
+    }): Promise<void>;
+
+    updateRefreshToken(data: {
+        sessionId: number;
+        refreshToken: string;
+    }): Promise<void>;
 }
