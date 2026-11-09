@@ -4,7 +4,7 @@ export interface IOtpRepository {
     saveOtp(data: {
         userId: number,
         otp: string
-    }) : Promise<string>;
+    }) : Promise<void>;
 
     readOtp(data: {
         userId: number
