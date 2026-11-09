@@ -1,7 +1,9 @@
 import jwt from "jsonwebtoken"
-import { ITokenService } from "../../domain/interfaces/token.services.js"
+import { ITokenService, TokenPayload } from "../../domain/interfaces/token.services.js"
 import { UserRole } from "../../domain/types/user-role.type.js";
 import { AppError } from "../../shared/errors/app.error.js";
+
+type TokenType = "ACCESS" | "REFRESH";
 
 export class JwtTokenService implements ITokenService {
   constructor(
@@ -11,38 +13,35 @@ export class JwtTokenService implements ITokenService {
     private readonly expiresInR: jwt.SignOptions["expiresIn"]
   ) {}
 
-  generateAccessToken(payload: {
-    userId: number;
-    email: string;
-    role: UserRole;
-  }): string {
-    return jwt.sign(payload, this.accessTokenSecret, {
+  generateAccessToken(payload: TokenPayload): string {
+    return jwt.sign({...payload, tokenType: "ACCESS" as TokenType }, 
+      this.accessTokenSecret, {
       expiresIn: this.expiresInA,
       issuer: "my-api",
-      audience: "my-app"
+      audience: "my-app",
+      algorithm: "HS256"
     });
   }
 
-  generateRefreshTOken(payload: { 
-    userId: number; 
-    email: string; 
-    role: UserRole; 
-  }): string {
-      return jwt.sign(payload, this.refreshTokenSecret, {
+  generateRefreshToken(payload: TokenPayload): string {
+      return jwt.sign({...payload, tokenType: "REFRESH" as TokenType }, 
+        this.refreshTokenSecret, {
         expiresIn: this.expiresInR,
         issuer: "my-api",
-        audience: "my-app"
+        audience: "my-app",
+        algorithm: "HS256"
       });
   }
 
-  verifyRefreshToken(token: string): { userId: number; email: string; role: UserRole; } {
+  verifyRefreshToken(token: string): TokenPayload {
       try {
         const decoded = jwt.verify(
             token,
             this.refreshTokenSecret,
             {
                 issuer: "my-api",
-                audience: "my-app"
+                audience: "my-app",
+                algorithms: ["HS256"]
             }
         );
 

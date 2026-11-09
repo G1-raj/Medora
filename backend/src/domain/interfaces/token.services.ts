@@ -1,21 +1,15 @@
 import { UserRole } from "../types/user-role.type.js";
 
+export type TokenPayload = {
+    userId: number;
+    email: string;
+    role: UserRole;
+}
+
 export interface ITokenService {
-    generateAccessToken(payload: {
-        userId: number,
-        email: string,
-        role: UserRole
-    }): string;
+    generateAccessToken(payload: TokenPayload): string;
 
-    generateRefreshTOken(payload: {
-        userId: number,
-        email: string,
-        role: UserRole
-    }): string;
+    generateRefreshToken(payload: TokenPayload): string;
 
-    verifyRefreshToken(token: string): {
-        userId: number;
-        email: string;
-        role: UserRole;
-    };
+    verifyRefreshToken(token: string): TokenPayload;
 }
