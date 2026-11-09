@@ -61,7 +61,7 @@ export class AuthService {
             role: user.role
         });
 
-        const refreshToken = this.tokenService.generateRefreshTOken({
+        const refreshToken = this.tokenService.generateRefreshToken({
             userId: user.id,
             email: user.email,
             role: user.role
