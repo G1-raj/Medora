@@ -41,12 +41,20 @@ export class CloudinaryImageService implements ICloudinaryService {
     }
 
     async deleteImage(imageId: string): Promise<void> {
-        const result = await cloudinary.uploader.destroy(imageId, {
-            invalidate: true
-        });
+        try {
+            const result = await cloudinary.uploader.destroy(imageId, {
+                invalidate: true
+            });
 
-        if(result.result != "ok") {
-            throw new Error(`Failed to delete image: ${result.result}`);
+            if(result.result != "ok") {
+                throw new Error(`Failed to delete image: ${result.result}`);
+            }   
+        } catch (error) {
+            if (error instanceof AppError) {
+                throw error;
+            }
+
+            throw new AppError("Failed to delete profile picture", 500);
         }
     }
 }
