@@ -8,10 +8,10 @@ import { SendEmailDto } from "../dto/send-email.dto.js";
 import { VerifyOtpDto } from "../dto/verify-otp.dto.js";
 import { ChangePasswordDto } from "../dto/change-password.dto.js";
 import { generateOtp } from "../../infrastructure/services/otp.service.js";
-import { sendEmail } from "../../infrastructure/services/email.service.js";
 import { IOtpRepository } from "../../domain/interfaces/otp.repository.js";
 import { ITokenRepository } from "../../domain/interfaces/token.repository.js";
 import { RefreshTokenDto } from "../dto/refresh-token.dto.js";
+import { IEmailService } from "../../domain/interfaces/email.service.js";
 
 export class AuthService {
     constructor(
@@ -20,6 +20,7 @@ export class AuthService {
         private readonly tokenRepository: ITokenRepository,
         private readonly passwordHasher: IPasswordHasher,
         private readonly tokenService: ITokenService,
+        private readonly emailService: IEmailService
     ) {}
 
     async signup(data: SignupDto) {
@@ -114,7 +115,7 @@ export class AuthService {
         });
 
         //send otp through email
-        await sendEmail(user.email, otp);
+        await this.emailService.sendOtpEmail(user.email, otp)
 
         return "Otp sent successfully"
 
