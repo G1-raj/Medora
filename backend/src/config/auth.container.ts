@@ -4,6 +4,7 @@ import { PrismaUserRepository } from "../infrastructure/repositories/prisma-user
 import { PrismaTokenRepository } from "../infrastructure/repositories/prisme-token.repository.js";
 import { Argon2PasswordHasher } from "../infrastructure/security/argon2-password-hasher.js";
 import { JwtTokenService } from "../infrastructure/security/jwt.token-service.js";
+import { NodemailerEmailService } from "../infrastructure/services/nodemailer-email.service.js";
 import { AuthController } from "../presentation/controllers/auth.controller.js";
 
 const accessTokenSecret = process.env.JWT_SECRET;
@@ -32,12 +33,15 @@ const tokenService = new JwtTokenService(
   refreshTokenExpiry
 );
 
+const emailService = new NodemailerEmailService();
+
 const authService = new AuthService(
   userRepository,
   otpRepository,
   tokenRepository,
   passwordHasher,
-  tokenService
+  tokenService,
+  emailService
 );
 
 export const authController = new AuthController(authService);
