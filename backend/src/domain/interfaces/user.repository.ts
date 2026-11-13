@@ -4,6 +4,8 @@ import { User } from "../entities/user.entity.js";
 export interface IUserRepository {
     findByEmail(email: string): Promise<User | null>;
 
+    findById(id: number): Promise<User | null>;
+
     create(data: {
         email: string,
         fullName: string,

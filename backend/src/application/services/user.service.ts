@@ -13,6 +13,28 @@ export class UserService {
         private readonly cloudinaryImageService: ICloudinaryService
     ) {}
 
+    async getMe(userId: number) {
+        if (!userId) {
+            throw new AppError("Unauthorized", 401);
+        }
+
+        const user = await this.userRepository.findById(userId);
+
+        if (!user) {
+            throw new AppError("User not found", 404);
+        }
+
+        return {
+            id: user.id,
+            email: user.email,
+            fullName: user.fullName,
+            role: user.role,
+            profilePicture: user.profilePicture ?? null,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt
+        };
+    }
+
     async uploadProfilePicture(data: UploadImageDto) {
         if(!data.userId) {
             throw new AppError("Invalid user", 401);

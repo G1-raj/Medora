@@ -9,6 +9,22 @@ export class UserController {
         private readonly userService: UserService
     ) {}
 
+    getMe = async (req: Request, res: Response) => {
+        const userId = req.user?.id;
+
+        if (!userId) {
+            throw new AppError("Unauthorized", 401);
+        }
+
+        const result = await this.userService.getMe(userId);
+
+        return res.status(200).json({
+            success: true,
+            message: "User profile retrieved successfully",
+            data: result
+        });
+    };
+
     uploadImage = async (req: Request, res: Response) => {
 
         const userId = req.user?.id;
