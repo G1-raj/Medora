@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { z } from "zod";
 import { AuthService } from "../../application/services/auth.service.js";
+import { AppError } from "../../shared/errors/app.error.js";
 
 const signupSchema = z.object({
   fullName: z.string().trim().min(2).max(100),
@@ -50,7 +51,7 @@ export class AuthController {
     res.cookie("refreshToken", result.refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        sameSite: "strict",
         path: "/api/auth",
         maxAge: 7 * 24 * 60 * 60 * 1000
     });
@@ -64,6 +65,32 @@ export class AuthController {
       }
     });
   };
+
+  refreshAccessToken = async (req: Request, res: Response) => {
+    const refreshToken = req.cookies?.refreshToken;
+
+    if (!refreshToken) {
+        throw new AppError("Refresh token is required", 401);
+    }
+
+    const result = await this.authService.refreshAccessToken({refreshToken});
+
+    res.cookie("refreshToken", result.refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/api/auth",
+        maxAge: 7 * 24 * 60 * 60 * 1000
+    });
+
+    return res.status(200).json({
+        success: true,
+        message: "Access token refreshed successfully",
+        data: {
+            accessToken: result.accessToken
+        }
+    });
+  }
 
   sendOtp = async (req: Request, res: Response) => {
     const input = sendOtpSchema.parse(req.body);

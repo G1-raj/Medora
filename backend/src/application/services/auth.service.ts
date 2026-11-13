@@ -82,7 +82,7 @@ export class AuthService {
         };
     }
 
-    async refreshToken(data: RefreshTokenDto) {
+    async refreshAccessToken(data: RefreshTokenDto) {
 
 
         const decoded = this.tokenService.verifyRefreshToken(data.refreshToken);
@@ -93,9 +93,45 @@ export class AuthService {
             throw new AppError("Invalid refresh token", 401);
         }
 
+        const sessions = await this.tokenRepository.getAllActiveSessions({
+            userId: user.id
+        });
+
+        let matchedSession = null;
+
+        for(const session of sessions) {
+            const isMatch = await this.passwordHasher.compare(data.refreshToken, session.refreshToken);
+
+            if(isMatch) {
+                matchedSession = session;
+                break;
+            }
+        }
+
+        if(!matchedSession) {
+            throw new AppError("Invalid or revoked refresh token", 401);
+        }
+
+        const payload = {
+            userId: user.id,
+            email: user.email,
+            role: user.role
+        }
+
+        const accessToken = this.tokenService.generateAccessToken(payload);
+        const refreshToken = this.tokenService.generateRefreshToken(payload);
+
         const refreshTokenHash = await this.passwordHasher.hash(data.refreshToken);
 
-        
+        await this.tokenRepository.updateRefreshToken({
+            sessionId: matchedSession.id,
+            refreshToken: refreshTokenHash
+        });
+
+        return {
+            accessToken,
+            refreshToken
+        }
     }
 
     async sendOtp(data: SendEmailDto) {
