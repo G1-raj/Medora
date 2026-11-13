@@ -204,6 +204,44 @@ export class AuthService {
         }
     }
 
+    async logOut(data: RefreshTokenDto) {
+        const decoded = this.tokenService.verifyRefreshToken(data.refreshToken);
+
+        const user = await this.userRepository.findByEmail(decoded.email);
+
+        if (!user || user.id !== decoded.userId) {
+            throw new AppError("Invalid refresh token", 401);
+        }
+
+        const sessions = await this.tokenRepository.getAllActiveSessions({
+            userId: user.id
+        });
+
+        let matchedSession = null;
+
+        for (const session of sessions) {
+            const isMatch = await this.passwordHasher.compare(
+                data.refreshToken,
+                session.refreshToken
+            );
+
+            if (isMatch) {
+                matchedSession = session;
+                break;
+            }
+        }
+
+        if (!matchedSession) {
+            throw new AppError("Invalid or revoked refresh token", 401);
+        }
+
+        await this.tokenRepository.revokeSession({
+            sessionId: matchedSession.id
+        });
+
+        return "Logged out successfully";
+    }
+
     private toSafeUser(user: {
         id: number,
         email: string,

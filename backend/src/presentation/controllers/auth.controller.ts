@@ -28,6 +28,10 @@ const changePasswordSchema = z.object({
   password: z.string().min(1).max(128)
 });
 
+const refreshTokenSchema = z.object({
+    refreshToken: z.string().min(1)
+});
+
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -133,4 +137,17 @@ export class AuthController {
       message: "Password changed successfully"
     });
   }
+
+  logout = async (req: Request, res: Response) => {
+    const input = refreshTokenSchema.parse(req.body);
+
+    const result = await this.authService.logOut(input);
+
+    return res.status(200).json({
+        success: true,
+        message: result
+    });
+  }
+
+  
 }
