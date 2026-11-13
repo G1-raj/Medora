@@ -1,7 +1,9 @@
 import nodemailer from "nodemailer";
+import { IEmailService } from "../../domain/interfaces/email.service.js";
 
-const transporter = nodemailer.createTransport(
-    {
+export class NodemailerEmailService implements IEmailService {
+
+    private transporter = nodemailer.createTransport({
         secure: true,
         host: "smtp.gmail.com",
         port: 465,
@@ -9,11 +11,10 @@ const transporter = nodemailer.createTransport(
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_APP_PASSWORD
         }
-    }
-);
+    });
 
-export async function sendEmail(to: string, otp: string) {
-    await transporter.sendMail({
+    async sendOtpEmail(to: string, otp: string): Promise<void> {
+        await this.transporter.sendMail({
         from: `"Medora" <${process.env.GMAIL_USER}>`,
         to,
         subject: "Medora email verification code",
@@ -28,4 +29,5 @@ export async function sendEmail(to: string, otp: string) {
             </div>
         `,
     });
+    }
 }
