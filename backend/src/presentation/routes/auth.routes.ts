@@ -7,6 +7,9 @@ export function createAuthRoutes(controller: AuthController) {
 
   router.post("/signup", authRateLimit, controller.signup);
   router.post("/login", loginLimiter,controller.login);
+  router.post("/refresh", authRateLimit, controller.refreshAccessToken);
+
+  
   router.post("/forgot-password/send-otp", sendOtpLimiter, controller.sendOtp);
   router.post("/forgot-password/verify-otp", verifyOtpLimiter, controller.verifyOtp);
   router.post("/forgot-password/change-password", authRateLimit, controller.changePassword);
