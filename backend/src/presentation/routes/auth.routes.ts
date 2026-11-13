@@ -7,13 +7,13 @@ export function createAuthRoutes(controller: AuthController) {
 
   router.post("/signup", authRateLimit, controller.signup);
   router.post("/login", loginLimiter,controller.login);
-  router.post("/refresh", authRateLimit, controller.refreshAccessToken);
+  router.post("/tokens/refresh", authRateLimit, controller.refreshAccessToken);
   router.post("/logout", logoutLimiter, controller.logout);
 
   
-  router.post("/forgot-password/send-otp", sendOtpLimiter, controller.sendOtp);
-  router.post("/forgot-password/verify-otp", verifyOtpLimiter, controller.verifyOtp);
-  router.post("/forgot-password/change-password", authRateLimit, controller.changePassword);
+  router.post("/password-reset/otp", sendOtpLimiter, controller.sendOtp);
+  router.post("/password-reset/verify", verifyOtpLimiter, controller.verifyOtp);
+  router.post("/password-reset/confirm", authRateLimit, controller.changePassword);
 
   return router;
 }
