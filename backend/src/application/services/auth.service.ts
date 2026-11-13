@@ -138,7 +138,7 @@ export class AuthService {
         const user = await this.userRepository.findByEmail(data.email);
 
         if (!user) {
-            throw new AppError("Invalid email", 401);
+            throw new AppError("If the account exists, an OTP has been sent.", 401);
         }
 
         //generate otp
