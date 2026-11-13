@@ -161,7 +161,7 @@ export class AuthService {
         const user = await this.userRepository.findByEmail(data.email);
 
         if (!user) {
-            throw new AppError("Invalid email", 401);
+            throw new AppError("Invalid or expired OTP", 401);
         }
 
         const otpRecord = await this.otpRepository.readOtp({userId: user.id});
@@ -173,13 +173,13 @@ export class AuthService {
         const isValidOtp = await this.passwordHasher.compare(data.otp, otpRecord.otpHash);
 
         if(!isValidOtp) {
-            throw new AppError("Invalid Otp", 400);
+            throw new AppError("Invalid or expired Otp", 400);
         }
 
         const markedUsed = await this.otpRepository.markOtpUsed({otpId: otpRecord.id});
 
         if (!markedUsed) {
-            throw new AppError("OTP already used or expired", 400);
+            throw new AppError("Invalid or expired OTP", 400);
         }
 
         return "Otp verified successfully";
