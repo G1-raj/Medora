@@ -24,5 +24,10 @@ export interface MedicationInput {
 
 export interface IMedicationRepository {
     create(data: MedicationInput) : Promise<Medication>;
+
+    findById(id: number, userId: number) : Promise<Medication | null>;
+
+    findAll(userId: number, status?: Status) : Promise<Medication[]>;
+
 }
 
