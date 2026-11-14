@@ -12,7 +12,7 @@ export interface Medication {
     strength: Prisma.Decimal;
     strengthUnit: StrengthUnit;
     medicineForm: MedicationForm;
-    medicationDirection: string;
+    medicineDirection: string;
     reasonForMedication: string | null;
 
     status: Status;
