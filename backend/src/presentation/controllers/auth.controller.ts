@@ -1,36 +1,16 @@
 import { Request, Response } from "express";
-import { z } from "zod";
 import { AuthService } from "../../application/services/auth.service.js";
 import { AppError } from "../../shared/errors/app.error.js";
+import { 
+  changePasswordSchema, 
+  loginSchema, 
+  refreshTokenSchema, 
+  sendOtpSchema, 
+  signupSchema, 
+  verifyOtpSchema 
+} from "../validators/auth.validators.js";
 
-const signupSchema = z.object({
-  fullName: z.string().trim().min(2).max(100),
-  email: z.string().trim().email().transform(v => v.toLowerCase()),
-  password: z.string().min(12).max(128)
-});
 
-const loginSchema = z.object({
-  email: z.string().trim().email().transform(v => v.toLowerCase()),
-  password: z.string().min(1).max(128)
-});
-
-const sendOtpSchema = z.object({
-  email: z.string().trim().email().transform(v => v.toLowerCase()),
-});
-
-const verifyOtpSchema = z.object({
-  email: z.string().trim().email().transform(v => v.toLowerCase()),
-  otp: z.string().trim()
-});
-
-const changePasswordSchema = z.object({
-  email: z.string().trim().email().transform(v => v.toLowerCase()),
-  password: z.string().min(1).max(128)
-});
-
-const refreshTokenSchema = z.object({
-    refreshToken: z.string().min(1)
-});
 
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
