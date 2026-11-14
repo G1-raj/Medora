@@ -10,8 +10,18 @@ export class MedicationService {
 
     async addMedication(data: AddMedicationDto, userId: number) {
 
-        if (!userId || !Number.isInteger(userId)) {
+        if (!Number.isInteger(userId) || userId <= 0) {
             throw new AppError("Unauthorized", 401);
+        }
+
+        if (
+            data.endDate &&
+            data.endDate < data.startDate
+        ) {
+            throw new AppError(
+                "End date cannot be earlier than start date",
+                400
+            );
         }
 
         const medication = await this.medicationRepository.create({ 

@@ -4,7 +4,7 @@ import authMiddleware from "../middlewares/auth.middleware.js";
 import { deleteProfilePictureLimiter, getMeLimiter, uploadProfilePictureLimiter } from "../middlewares/user.rate-limit.middleware.js";
 
 
-export function createUserRoutes(controller: UserController) {
+export function userRoutes(controller: UserController) {
 
     const router = Router();
 
