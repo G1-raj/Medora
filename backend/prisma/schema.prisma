@@ -1,0 +1,131 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum StrengthUnit {
+  MCG
+  UG       @map("µg")
+  MG
+  G
+  ML       @map("mL")
+  MG_ML    @map("mg/mL")
+  MCG_ML   @map("mcg/mL")
+  MG_5_ML  @map("mg/5 mL")
+  PERCENT  @map("%")
+  IU
+  MEQ      @map("mEq")
+  MMOL     @map("mmol")
+  UNITS    @map("Units")
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+enum MedicationForm {
+  TABLET
+  CAPSULE
+  LIQUID
+  OTHER
+}
+
+model User {
+  id             Int             @id      @default(autoincrement())
+  email          String          @unique
+  fullName       String
+  password       String
+  role           Role                     @default(USER)
+  profilePicture ProfilePicture?
+
+
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  session        Session[]
+  otp            Otp[]
+  medications Medication[]
+}
+
+model ProfilePicture {
+  id        Int           @id          @default(autoincrement())
+  userId    Int           @unique
+  imageUrl  String
+  imageId   String
+
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Session {
+  id           Int       @id           @default(autoincrement())
+  userId       Int 
+  refreshToken String    @unique
+  expiresAt    DateTime
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Otp {
+  id           Int       @id @default(autoincrement())
+  userId       Int
+  otpHash      String 
+  expiresAt    DateTime
+  used         Boolean  @default(false)
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Medication {
+  id                  Int            @id        @default(autoincrement())
+  userId              Int
+
+  medicineName        String
+  medicineComposition String[]
+  strength            Decimal        @db.Decimal(10, 3)
+  strengthUnit        StrengthUnit              @default(MG)
+  medicineForm        MedicationForm            @default(TABLET)
+  medicineDirection   String
+  reasonForMedication String?
+
+  status              Status                    @default(ACTIVE)
+
+  startDate           DateTime       @db.Date
+  endDate             DateTime?      @db.Date
+
+  notes               String?
+
+  createdAt           DateTime                  @default(now())
+  updatedAt           DateTime                  @updatedAt
+
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, status])
+}
