@@ -61,3 +61,8 @@ export type Session = Prisma.SessionModel
  * 
  */
 export type Otp = Prisma.OtpModel
+/**
+ * Model Medication
+ * 
+ */
+export type Medication = Prisma.MedicationModel
