@@ -167,7 +167,14 @@ export type MedicationScheduleScalarFieldEnum = (typeof MedicationScheduleScalar
 
 export const MedicationDoseScalarFieldEnum = {
   id: 'id',
-  scheduleId: 'scheduleId'
+  scheduleId: 'scheduleId',
+  scheduledAt: 'scheduledAt',
+  takenAt: 'takenAt',
+  status: 'status',
+  doseQuantity: 'doseQuantity',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type MedicationDoseScalarFieldEnum = (typeof MedicationDoseScalarFieldEnum)[keyof typeof MedicationDoseScalarFieldEnum]

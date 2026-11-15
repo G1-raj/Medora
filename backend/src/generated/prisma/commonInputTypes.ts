@@ -314,6 +314,23 @@ export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedIntNullableFilter<$PrismaModel>
 }
 
+export type EnumDoseStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.DoseStatus | Prisma.EnumDoseStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DoseStatus[] | Prisma.ListEnumDoseStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DoseStatus[] | Prisma.ListEnumDoseStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDoseStatusFilter<$PrismaModel> | $Enums.DoseStatus
+}
+
+export type EnumDoseStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DoseStatus | Prisma.EnumDoseStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DoseStatus[] | Prisma.ListEnumDoseStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DoseStatus[] | Prisma.ListEnumDoseStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDoseStatusWithAggregatesFilter<$PrismaModel> | $Enums.DoseStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDoseStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDoseStatusFilter<$PrismaModel>
+}
+
 export type NestedIntFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
   in?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
@@ -625,6 +642,23 @@ export type NestedFloatNullableFilter<$PrismaModel = never> = {
   gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   not?: Prisma.NestedFloatNullableFilter<$PrismaModel> | number | null
+}
+
+export type NestedEnumDoseStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.DoseStatus | Prisma.EnumDoseStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DoseStatus[] | Prisma.ListEnumDoseStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DoseStatus[] | Prisma.ListEnumDoseStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDoseStatusFilter<$PrismaModel> | $Enums.DoseStatus
+}
+
+export type NestedEnumDoseStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DoseStatus | Prisma.EnumDoseStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DoseStatus[] | Prisma.ListEnumDoseStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DoseStatus[] | Prisma.ListEnumDoseStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDoseStatusWithAggregatesFilter<$PrismaModel> | $Enums.DoseStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDoseStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDoseStatusFilter<$PrismaModel>
 }
 
 

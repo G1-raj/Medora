@@ -174,8 +174,21 @@ model MedicationSchedule {
 }
 
 model MedicationDose {
-  id Int @id @default(autoincrement())
-  scheduleId Int
+  id           Int        @id @default(autoincrement())
+  scheduleId   Int
 
-  schedule MedicationSchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  scheduledAt  DateTime
+  takenAt      DateTime?
+
+  status       DoseStatus @default(PENDING)
+  doseQuantity Decimal   @db.Decimal(10, 3)
+
+  notes        String?
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  schedule     MedicationSchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  @@unique([scheduleId, scheduledAt])
+  @@index([scheduledAt, status])
 }

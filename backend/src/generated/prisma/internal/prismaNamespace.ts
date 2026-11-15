@@ -1071,7 +1071,14 @@ export type MedicationScheduleScalarFieldEnum = (typeof MedicationScheduleScalar
 
 export const MedicationDoseScalarFieldEnum = {
   id: 'id',
-  scheduleId: 'scheduleId'
+  scheduleId: 'scheduleId',
+  scheduledAt: 'scheduledAt',
+  takenAt: 'takenAt',
+  status: 'status',
+  doseQuantity: 'doseQuantity',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type MedicationDoseScalarFieldEnum = (typeof MedicationDoseScalarFieldEnum)[keyof typeof MedicationDoseScalarFieldEnum]
@@ -1237,6 +1244,20 @@ export type EnumScheduleFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType
  * Reference to a field of type 'ScheduleFrequency[]'
  */
 export type ListEnumScheduleFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScheduleFrequency[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DoseStatus'
+ */
+export type EnumDoseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DoseStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'DoseStatus[]'
+ */
+export type ListEnumDoseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DoseStatus[]'>
     
 
 
