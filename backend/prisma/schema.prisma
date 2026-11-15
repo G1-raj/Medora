@@ -45,6 +45,20 @@ enum MedicationForm {
   OTHER
 }
 
+enum ScheduleFrequency {
+  DAILY
+  WEEKLY
+  INTERVAL
+  AS_NEEDED
+}
+
+enum DoseStatus {
+  PENDING
+  TAKEN
+  SKIPPED
+  MISSED
+}
+
 model User {
   id             Int             @id      @default(autoincrement())
   email          String          @unique
@@ -59,7 +73,7 @@ model User {
 
   session        Session[]
   otp            Otp[]
-  medications Medication[]
+  medications    Medication[]
 }
 
 model ProfilePicture {
@@ -124,8 +138,44 @@ model Medication {
   createdAt           DateTime                  @default(now())
   updatedAt           DateTime                  @updatedAt
 
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  medicationSchedule  MedicationSchedule[]
 
   @@index([userId])
   @@index([userId, status])
+}
+
+model MedicationSchedule {
+  id            Int               @id @default(autoincrement())
+  medicationId  Int
+
+  frequency     ScheduleFrequency
+  times         String[]
+  weekDays      Int[]
+
+  intervalHours Int?
+
+  doseQuantity  Decimal           @db.Decimal(10, 3)
+
+  startDate     DateTime          @db.Date
+  endDate       DateTime?         @db.Date
+
+  isActive      Boolean           @default(true)
+
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  medication    Medication        @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+
+  doses         MedicationDose[]
+
+  @@index([medicationId])
+  @@index([medicationId, isActive])
+}
+
+model MedicationDose {
+  id Int @id @default(autoincrement())
+  scheduleId Int
+
+  schedule MedicationSchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
 }

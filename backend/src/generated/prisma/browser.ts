@@ -42,3 +42,13 @@ export type Otp = Prisma.OtpModel
  * 
  */
 export type Medication = Prisma.MedicationModel
+/**
+ * Model MedicationSchedule
+ * 
+ */
+export type MedicationSchedule = Prisma.MedicationScheduleModel
+/**
+ * Model MedicationDose
+ * 
+ */
+export type MedicationDose = Prisma.MedicationDoseModel

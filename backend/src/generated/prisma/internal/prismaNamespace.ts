@@ -401,7 +401,9 @@ export const ModelName = {
   ProfilePicture: 'ProfilePicture',
   Session: 'Session',
   Otp: 'Otp',
-  Medication: 'Medication'
+  Medication: 'Medication',
+  MedicationSchedule: 'MedicationSchedule',
+  MedicationDose: 'MedicationDose'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -417,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "profilePicture" | "session" | "otp" | "medication"
+    modelProps: "user" | "profilePicture" | "session" | "otp" | "medication" | "medicationSchedule" | "medicationDose"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -791,6 +793,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    MedicationSchedule: {
+      payload: Prisma.$MedicationSchedulePayload<ExtArgs>
+      fields: Prisma.MedicationScheduleFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MedicationScheduleFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationSchedulePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MedicationScheduleFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationSchedulePayload>
+        }
+        findFirst: {
+          args: Prisma.MedicationScheduleFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationSchedulePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MedicationScheduleFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationSchedulePayload>
+        }
+        findMany: {
+          args: Prisma.MedicationScheduleFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationSchedulePayload>[]
+        }
+        create: {
+          args: Prisma.MedicationScheduleCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationSchedulePayload>
+        }
+        createMany: {
+          args: Prisma.MedicationScheduleCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MedicationScheduleCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationSchedulePayload>[]
+        }
+        delete: {
+          args: Prisma.MedicationScheduleDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationSchedulePayload>
+        }
+        update: {
+          args: Prisma.MedicationScheduleUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationSchedulePayload>
+        }
+        deleteMany: {
+          args: Prisma.MedicationScheduleDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MedicationScheduleUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MedicationScheduleUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationSchedulePayload>[]
+        }
+        upsert: {
+          args: Prisma.MedicationScheduleUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationSchedulePayload>
+        }
+        aggregate: {
+          args: Prisma.MedicationScheduleAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMedicationSchedule>
+        }
+        groupBy: {
+          args: Prisma.MedicationScheduleGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MedicationScheduleGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MedicationScheduleCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MedicationScheduleCountAggregateOutputType> | number
+        }
+      }
+    }
+    MedicationDose: {
+      payload: Prisma.$MedicationDosePayload<ExtArgs>
+      fields: Prisma.MedicationDoseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MedicationDoseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationDosePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MedicationDoseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationDosePayload>
+        }
+        findFirst: {
+          args: Prisma.MedicationDoseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationDosePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MedicationDoseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationDosePayload>
+        }
+        findMany: {
+          args: Prisma.MedicationDoseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationDosePayload>[]
+        }
+        create: {
+          args: Prisma.MedicationDoseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationDosePayload>
+        }
+        createMany: {
+          args: Prisma.MedicationDoseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MedicationDoseCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationDosePayload>[]
+        }
+        delete: {
+          args: Prisma.MedicationDoseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationDosePayload>
+        }
+        update: {
+          args: Prisma.MedicationDoseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationDosePayload>
+        }
+        deleteMany: {
+          args: Prisma.MedicationDoseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MedicationDoseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MedicationDoseUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationDosePayload>[]
+        }
+        upsert: {
+          args: Prisma.MedicationDoseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicationDosePayload>
+        }
+        aggregate: {
+          args: Prisma.MedicationDoseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMedicationDose>
+        }
+        groupBy: {
+          args: Prisma.MedicationDoseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MedicationDoseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MedicationDoseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MedicationDoseCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -899,6 +1049,32 @@ export const MedicationScalarFieldEnum = {
 } as const
 
 export type MedicationScalarFieldEnum = (typeof MedicationScalarFieldEnum)[keyof typeof MedicationScalarFieldEnum]
+
+
+export const MedicationScheduleScalarFieldEnum = {
+  id: 'id',
+  medicationId: 'medicationId',
+  frequency: 'frequency',
+  times: 'times',
+  weekDays: 'weekDays',
+  intervalHours: 'intervalHours',
+  doseQuantity: 'doseQuantity',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MedicationScheduleScalarFieldEnum = (typeof MedicationScheduleScalarFieldEnum)[keyof typeof MedicationScheduleScalarFieldEnum]
+
+
+export const MedicationDoseScalarFieldEnum = {
+  id: 'id',
+  scheduleId: 'scheduleId'
+} as const
+
+export type MedicationDoseScalarFieldEnum = (typeof MedicationDoseScalarFieldEnum)[keyof typeof MedicationDoseScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1047,6 +1223,20 @@ export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
  * Reference to a field of type 'Status[]'
  */
 export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ScheduleFrequency'
+ */
+export type EnumScheduleFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScheduleFrequency'>
+    
+
+
+/**
+ * Reference to a field of type 'ScheduleFrequency[]'
+ */
+export type ListEnumScheduleFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScheduleFrequency[]'>
     
 
 
@@ -1219,6 +1409,8 @@ export type GlobalOmitConfig = {
   session?: Prisma.SessionOmit
   otp?: Prisma.OtpOmit
   medication?: Prisma.MedicationOmit
+  medicationSchedule?: Prisma.MedicationScheduleOmit
+  medicationDose?: Prisma.MedicationDoseOmit
 }
 
 /* Types for Logging */

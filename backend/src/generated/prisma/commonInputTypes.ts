@@ -270,6 +270,50 @@ export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
 }
 
+export type EnumScheduleFrequencyFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScheduleFrequency | Prisma.EnumScheduleFrequencyFieldRefInput<$PrismaModel>
+  in?: $Enums.ScheduleFrequency[] | Prisma.ListEnumScheduleFrequencyFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScheduleFrequency[] | Prisma.ListEnumScheduleFrequencyFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScheduleFrequencyFilter<$PrismaModel> | $Enums.ScheduleFrequency
+}
+
+export type IntNullableFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.IntFieldRefInput<$PrismaModel> | null
+  in?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel> | null
+  notIn?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel> | null
+  lt?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedIntNullableFilter<$PrismaModel> | number | null
+}
+
+export type EnumScheduleFrequencyWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScheduleFrequency | Prisma.EnumScheduleFrequencyFieldRefInput<$PrismaModel>
+  in?: $Enums.ScheduleFrequency[] | Prisma.ListEnumScheduleFrequencyFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScheduleFrequency[] | Prisma.ListEnumScheduleFrequencyFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScheduleFrequencyWithAggregatesFilter<$PrismaModel> | $Enums.ScheduleFrequency
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumScheduleFrequencyFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumScheduleFrequencyFilter<$PrismaModel>
+}
+
+export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.IntFieldRefInput<$PrismaModel> | null
+  in?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel> | null
+  notIn?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel> | null
+  lt?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _avg?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _sum?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedIntNullableFilter<$PrismaModel>
+}
+
 export type NestedIntFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
   in?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
@@ -537,6 +581,50 @@ export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
   _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumScheduleFrequencyFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScheduleFrequency | Prisma.EnumScheduleFrequencyFieldRefInput<$PrismaModel>
+  in?: $Enums.ScheduleFrequency[] | Prisma.ListEnumScheduleFrequencyFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScheduleFrequency[] | Prisma.ListEnumScheduleFrequencyFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScheduleFrequencyFilter<$PrismaModel> | $Enums.ScheduleFrequency
+}
+
+export type NestedEnumScheduleFrequencyWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScheduleFrequency | Prisma.EnumScheduleFrequencyFieldRefInput<$PrismaModel>
+  in?: $Enums.ScheduleFrequency[] | Prisma.ListEnumScheduleFrequencyFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScheduleFrequency[] | Prisma.ListEnumScheduleFrequencyFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScheduleFrequencyWithAggregatesFilter<$PrismaModel> | $Enums.ScheduleFrequency
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumScheduleFrequencyFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumScheduleFrequencyFilter<$PrismaModel>
+}
+
+export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.IntFieldRefInput<$PrismaModel> | null
+  in?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel> | null
+  notIn?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel> | null
+  lt?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.IntFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _avg?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _sum?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedIntNullableFilter<$PrismaModel>
+}
+
+export type NestedFloatNullableFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.FloatFieldRefInput<$PrismaModel> | null
+  in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  notIn?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  lt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedFloatNullableFilter<$PrismaModel> | number | null
 }
 
 
