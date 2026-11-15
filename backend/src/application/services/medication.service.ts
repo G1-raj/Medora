@@ -3,6 +3,7 @@ import { MEDICATION_STATUSES, Status } from "../../domain/types/status.type.js";
 import { Prisma } from "../../generated/prisma/client.js";
 import { AppError } from "../../shared/errors/app.error.js";
 import { AddMedicationDto } from "../dto/add-medication.dto.js";
+import { GetAllMedicationDto } from "../dto/get-allmedication.dto.js";
 
 export class MedicationService {
     constructor(
@@ -65,28 +66,28 @@ export class MedicationService {
 
     async getAllMedications(
         userId: number, 
-        limit: number = 10,
-        cursor?: number,
-        status?: Status
+        query: GetAllMedicationDto
     ) {
         if (!Number.isInteger(userId) || userId <= 0) {
             throw new AppError("Unauthorized", 401);
         }
+
+        const limit = query.limit ?? 10;
 
         if (!Number.isInteger(limit) || limit <= 0 || limit > 100) {
             throw new AppError("Invalid limit", 400);
         }
 
         if (
-            cursor !== undefined &&
-            (!Number.isInteger(cursor) || cursor <= 0)
+            query.cursor !== undefined &&
+            (!Number.isInteger(query.cursor) || query.cursor <= 0)
         ) {
             throw new AppError("Invalid cursor", 400);
         }
 
         if (
-            status !== undefined &&
-            !MEDICATION_STATUSES.includes(status)
+            query.status !== undefined &&
+            !MEDICATION_STATUSES.includes(query.status)
         ) {
             throw new AppError("Invalid medication status", 400);
         }
@@ -94,8 +95,8 @@ export class MedicationService {
         return await this.medicationRepository.findAll(
             userId,
             limit,
-            cursor,
-            status
+            query.cursor,
+            query.status
         );
     }
 

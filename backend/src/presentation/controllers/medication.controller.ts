@@ -77,9 +77,11 @@ export class MedicationController {
 
         const result = await this.medicationService.getAllMedications(
             userId,
-            limit,
-            cursor,
-            status as Status | undefined
+            {
+                limit,
+                cursor,
+                status: status as Status | undefined
+            }
         );
 
         return res.status(200).json({
