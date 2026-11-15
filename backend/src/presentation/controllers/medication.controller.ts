@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { MedicationService } from "../../application/services/medication.service.js";
 import { AppError } from "../../shared/errors/app.error.js";
-import { addMedicationSchema, updateMedicationStatusSchema } from "../validators/medication.validators.js";
+import { addMedicationSchema, updateMedicationSchema, updateMedicationStatusSchema } from "../validators/medication.validators.js";
 import { Status } from "../../domain/types/status.type.js";
 
 
@@ -90,6 +90,34 @@ export class MedicationController {
             data: result,
             nextCursor: result.nextCursor,
             hasMore: result.nextCursor != null
+        });
+    }
+
+    updateMedication = async (req: Request, res: Response) => {
+        const userId = req.user?.id;
+
+        if (!userId) {
+            throw new AppError("Unauthorized", 401);
+        }
+
+        const medicationId = Number(req.params.id);
+
+        if (!Number.isInteger(medicationId) || medicationId <= 0) {
+            throw new AppError("Invalid medication ID", 400);
+        }
+
+        const input = updateMedicationSchema.parse(req.body);
+
+        const result = await this.medicationService.updateMedication(
+            userId,
+            medicationId,
+            input,
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: "Medication updated successfully",
+            data: result
         });
     }
 

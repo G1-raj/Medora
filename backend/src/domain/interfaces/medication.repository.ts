@@ -1,5 +1,6 @@
 import { Prisma } from "../../generated/prisma/client.js";
 import { Medication } from "../entities/medication.entity.js";
+import { UpdateMedicationInput } from "../entities/update-medication.entity.js";
 import { MedicationForm } from "../types/medication-form.type.js";
 import { Status } from "../types/status.type.js";
 import { StrengthUnit } from "../types/strength-units.type.js";
@@ -36,6 +37,12 @@ export interface IMedicationRepository {
         medications: Medication[],
         nextCursor: number | null
     }>;
+
+    update(
+        userId: number,
+        medicationId: number,
+        data: UpdateMedicationInput
+    ) : Promise<Medication>;
 
     updateStatus(
         userId: number,

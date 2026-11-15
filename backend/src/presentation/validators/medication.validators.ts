@@ -60,3 +60,19 @@ export const updateMedicationStatusSchema = z.object({
 export type UpdateMedicationStatusDto = z.infer<
     typeof updateMedicationStatusSchema
 >;
+
+export const updateMedicationSchema = addMedicationSchema
+    .omit({
+        status: true
+    })
+    .partial()
+    .refine(
+        (data) => Object.keys(data).length > 0,
+        {
+            message: "At least one field must be provided"
+        }
+    );
+
+export type UpdateMedicationDto = z.infer<
+    typeof updateMedicationSchema
+>;

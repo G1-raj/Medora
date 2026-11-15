@@ -4,6 +4,7 @@ import { Prisma } from "../../generated/prisma/client.js";
 import { AppError } from "../../shared/errors/app.error.js";
 import { AddMedicationDto } from "../dto/add-medication.dto.js";
 import { GetAllMedicationDto } from "../dto/get-allmedication.dto.js";
+import { UpdateMedicationDto } from "../dto/update-medication.dto.js";
 
 export class MedicationService {
     constructor(
@@ -98,6 +99,52 @@ export class MedicationService {
             query.cursor,
             query.status
         );
+    }
+
+    async updateMedication(userId: number, medicationId: number, data: UpdateMedicationDto) {
+
+        if (!Number.isInteger(userId) || userId <= 0) {
+            throw new AppError("Unauthorized", 401);
+        }
+
+        if (!Number.isInteger(medicationId) || medicationId <= 0) {
+            throw new AppError("Invalid medication ID", 400);
+        }
+
+        const existingMedication = await this.medicationRepository.findById(
+            medicationId,
+            userId
+        );
+
+        if (!existingMedication) {
+            throw new AppError("Medication not found", 404);
+        }
+
+        const startDate = data.startDate ?? existingMedication.startDate;
+        const endDate = data.endDate !== undefined
+            ? data.endDate
+            : existingMedication.endDate;
+
+        if (endDate && endDate < startDate) {
+            throw new AppError(
+                "End date cannot be earlier than start date",
+                400
+            );
+        }
+
+        const { strength, ...rest } = data;
+
+        return this.medicationRepository.update(
+            userId,
+            medicationId,
+            {
+                ...rest,
+                ...(strength !== undefined && {
+                    strength: new Prisma.Decimal(strength)
+                })
+            }
+        );
+
     }
 
     async updateStatus(userId: number, medicationId: number, status: Status) {

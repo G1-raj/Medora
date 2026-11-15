@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { MedicationController } from "../controllers/medication.controller.js";
 import authMiddleware from "../middlewares/auth.middleware.js";
-import { addMedicationLimiter, deleteMedicationLimiter, getMedicationLimiter, updateStatusLimiter } from "../middlewares/medication.rate-limit.middleware.js";
+import { addMedicationLimiter, deleteMedicationLimiter, getMedicationLimiter, updateMedicationLimiter, updateStatusLimiter } from "../middlewares/medication.rate-limit.middleware.js";
 
 export function medicationRoutes(controller: MedicationController) {
     const router = Router();
@@ -13,6 +13,7 @@ export function medicationRoutes(controller: MedicationController) {
     router.get("/:id", getMedicationLimiter, controller.getMedication);
     router.get("/", getMedicationLimiter, controller.getAllMedication);
 
+    router.patch("/:id", updateMedicationLimiter, controller.updateMedication);
     router.patch("/:id/status", updateStatusLimiter, controller.updateMedicationStatus);
 
     router.delete("/:id", deleteMedicationLimiter, controller.deleteMedication);
