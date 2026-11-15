@@ -124,4 +124,29 @@ export class MedicationController {
         });
     }
 
+
+    deleteMedication = async (req: Request, res: Response) => {
+        const userId = req.user?.id;
+
+        if (!userId) {
+            throw new AppError("Unauthorized", 401);
+        }
+
+        const medicationId = Number(req.params.id);
+
+        if (!Number.isInteger(medicationId) || medicationId <= 0) {
+            throw new AppError("Invalid medication ID", 400);
+        }
+
+        await this.medicationService.deleteMedication(
+            userId,
+            medicationId
+        );
+
+        return res.status(204).json({
+            success: true,
+            message: "Medication deleted successfully"
+        });
+    }
+
 }

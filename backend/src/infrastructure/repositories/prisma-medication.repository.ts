@@ -85,4 +85,15 @@ export class PrismaMedicationRepository implements IMedicationRepository {
             }
         });
     }
+
+    async delete(userId: number, medicationId: number): Promise<boolean> {
+        const result = await prisma.medication.deleteMany({
+            where: {
+                userId,
+                id: medicationId
+            }
+        });
+
+        return result.count > 0;
+    }
 }

@@ -43,5 +43,10 @@ export interface IMedicationRepository {
         status: Status
     ) : Promise<Medication>;
 
+
+    delete(
+        userId: number,
+        medicationId: number
+    ) : Promise<boolean>;
 }
 

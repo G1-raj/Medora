@@ -118,4 +118,25 @@ export class MedicationService {
             status
         );
     }
+
+    async deleteMedication(userId: number, medicationId: number) {
+        if (!Number.isInteger(userId) || userId <= 0) {
+            throw new AppError("Unauthorized", 401);
+        }
+
+        if (!Number.isInteger(medicationId) || medicationId <= 0) {
+            throw new AppError("Invalid medication ID", 400);
+        }
+
+        const deleted = await this.medicationRepository.delete(
+            userId,
+            medicationId
+        );
+
+        if(!deleted) {
+            throw new AppError("Medication not found", 404);
+        }
+
+        return true;
+    }
 }
