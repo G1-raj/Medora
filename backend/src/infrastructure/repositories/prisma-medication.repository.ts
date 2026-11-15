@@ -25,17 +25,40 @@ export class PrismaMedicationRepository implements IMedicationRepository {
         return med;
     }
 
-    async findAll(userId: number, status?: Status): Promise<Medication[]> {
-        const allMed = await prisma.medication.findMany({
+    async findAll(
+        userId: number, 
+        limit: number,
+        cursor?: number,
+        status?: Status
+    ) {
+        const medications = await prisma.medication.findMany({
             where: {
                 userId: userId,
                 ...(status && { status })
             },
+            take: limit + 1,
+            ...(cursor && {
+                cursor: {
+                    id: cursor
+                },
+                skip: 1
+            }),
             orderBy: {
-                createdAt: "desc"
+                id: "desc"
             }
         });
 
-        return allMed;
+        const hasMore = medications.length > limit;
+
+        if(hasMore) {
+            medications.pop();
+        }
+
+        return {
+            medications,
+            nextCursor: hasMore
+                ? medications[medications.length - 1].id
+                : null
+        }
     }
 }

@@ -62,6 +62,13 @@ export class MedicationController {
             throw new AppError("Unauthorized", 401);
         }
 
+        const limit = Number(req.query.limit ?? 10);
+
+        const cursor = req.query.cursor !== undefined
+            ? Number(req.query.cursor)
+            : undefined;
+
+
         const status = req.query.status;
 
         if (status !== undefined && typeof status !== "string") {
@@ -70,13 +77,17 @@ export class MedicationController {
 
         const result = await this.medicationService.getAllMedications(
             userId,
+            limit,
+            cursor,
             status as Status | undefined
         );
 
         return res.status(200).json({
             success: true,
             message: "All medication fetched successfully",
-            data: result
+            data: result,
+            nextCursor: result.nextCursor,
+            hasMore: result.nextCursor != null
         });
     }
 

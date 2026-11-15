@@ -27,7 +27,15 @@ export interface IMedicationRepository {
 
     findById(id: number, userId: number) : Promise<Medication | null>;
 
-    findAll(userId: number, status?: Status) : Promise<Medication[]>;
+    findAll(
+        userId: number, 
+        limit: number,
+        cursor?: number,
+        status?: Status
+    ) : Promise<{
+        medications: Medication[],
+        nextCursor: number | null
+    }>;
 
 }
 

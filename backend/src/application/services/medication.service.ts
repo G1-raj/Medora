@@ -63,9 +63,25 @@ export class MedicationService {
 
     }
 
-    async getAllMedications(userId: number, status?: Status) {
+    async getAllMedications(
+        userId: number, 
+        limit: number = 10,
+        cursor?: number,
+        status?: Status
+    ) {
         if (!Number.isInteger(userId) || userId <= 0) {
             throw new AppError("Unauthorized", 401);
+        }
+
+        if (!Number.isInteger(limit) || limit <= 0 || limit > 100) {
+            throw new AppError("Invalid limit", 400);
+        }
+
+        if (
+            cursor !== undefined &&
+            (!Number.isInteger(cursor) || cursor <= 0)
+        ) {
+            throw new AppError("Invalid cursor", 400);
         }
 
         if (
@@ -75,8 +91,11 @@ export class MedicationService {
             throw new AppError("Invalid medication status", 400);
         }
 
-        const getAllMedications = await this.medicationRepository.findAll(userId, status);
-
-        return getAllMedications;
+        return await this.medicationRepository.findAll(
+            userId,
+            limit,
+            cursor,
+            status
+        );
     }
 }
