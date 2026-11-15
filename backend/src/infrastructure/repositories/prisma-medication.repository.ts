@@ -1,7 +1,8 @@
 import { prisma } from "../../config/database.js";
 import { Medication } from "../../domain/entities/medication.entity.js";
 import { IMedicationRepository, MedicationInput } from "../../domain/interfaces/medication.repository.js";
-import { Status } from "../../domain/types/status.type.js";
+import { MEDICATION_STATUSES, Status } from "../../domain/types/status.type.js";
+import { AppError } from "../../shared/errors/app.error.js";
 
 export class PrismaMedicationRepository implements IMedicationRepository {
     async create(data: MedicationInput): Promise<Medication> {
@@ -60,5 +61,28 @@ export class PrismaMedicationRepository implements IMedicationRepository {
                 ? medications[medications.length - 1].id
                 : null
         }
+    }
+
+    async updateStatus(userId: number, medicationId: number, status: Status): Promise<Medication> {
+        const result =  await prisma.medication.updateMany({
+            where: {
+                id: medicationId,
+                userId,
+            },
+            data: {
+                status
+            }
+        });
+
+        if (result.count === 0) {
+            throw new AppError("Medication not found", 404);
+        }
+
+        return prisma.medication.findFirstOrThrow({
+            where: {
+                id: medicationId,
+                userId
+            }
+        });
     }
 }

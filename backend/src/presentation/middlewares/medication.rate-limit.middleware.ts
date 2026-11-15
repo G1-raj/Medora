@@ -29,3 +29,22 @@ export const getMedicationLimiter = rateLimit({
         message: "Too many requests. Please try again later."
     }
 });
+
+export const updateStatusLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 30,
+
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+
+    keyGenerator: (req) => {
+        return req.user?.id
+            ? `user:${req.user.id}`
+            : `ip:${req.ip}`;
+    },
+
+    message: {
+        success: false,
+        message: "Too many requests. Please try again later."
+    }
+});

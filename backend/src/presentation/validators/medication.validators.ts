@@ -52,3 +52,11 @@ export const addMedicationSchema = z.object({
 );
 
 export type AddMedicationDto = z.infer<typeof addMedicationSchema>;
+
+export const updateMedicationStatusSchema = z.object({
+    status: z.enum(["ACTIVE", "INACTIVE"])
+});
+
+export type UpdateMedicationStatusDto = z.infer<
+    typeof updateMedicationStatusSchema
+>;

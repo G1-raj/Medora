@@ -37,5 +37,11 @@ export interface IMedicationRepository {
         nextCursor: number | null
     }>;
 
+    updateStatus(
+        userId: number,
+        medicationId: number,
+        status: Status
+    ) : Promise<Medication>;
+
 }
 

@@ -98,4 +98,24 @@ export class MedicationService {
             status
         );
     }
+
+    async updateStatus(userId: number, medicationId: number, status: Status) {
+        if (!Number.isInteger(userId) || userId <= 0) {
+            throw new AppError("Unauthorized", 401);
+        }
+
+        if (!Number.isInteger(medicationId) || medicationId <= 0) {
+            throw new AppError("Invalid medication ID", 400);
+        }
+
+        if (!MEDICATION_STATUSES.includes(status)) {
+            throw new AppError("Invalid medication status", 400);
+        }
+
+        return await this.medicationRepository.updateStatus(
+            userId,
+            medicationId,
+            status
+        );
+    }
 }
