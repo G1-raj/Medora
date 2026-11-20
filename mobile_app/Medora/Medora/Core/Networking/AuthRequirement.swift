@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AuthRequirement {
+enum AuthRequirement: Sendable {
     case none
     case accessToken
 }
