@@ -1,0 +1,1 @@
+export type MedicationForm = "TABLET" | "CAPSULE" | "LIQUID" | "OTHER"

@@ -235,6 +235,7 @@ export type UserWhereInput = {
   profilePicture?: Prisma.XOR<Prisma.ProfilePictureNullableScalarRelationFilter, Prisma.ProfilePictureWhereInput> | null
   session?: Prisma.SessionListRelationFilter
   otp?: Prisma.OtpListRelationFilter
+  medications?: Prisma.MedicationListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -248,6 +249,7 @@ export type UserOrderByWithRelationInput = {
   profilePicture?: Prisma.ProfilePictureOrderByWithRelationInput
   session?: Prisma.SessionOrderByRelationAggregateInput
   otp?: Prisma.OtpOrderByRelationAggregateInput
+  medications?: Prisma.MedicationOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -264,6 +266,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   profilePicture?: Prisma.XOR<Prisma.ProfilePictureNullableScalarRelationFilter, Prisma.ProfilePictureWhereInput> | null
   session?: Prisma.SessionListRelationFilter
   otp?: Prisma.OtpListRelationFilter
+  medications?: Prisma.MedicationListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -304,6 +307,7 @@ export type UserCreateInput = {
   profilePicture?: Prisma.ProfilePictureCreateNestedOneWithoutUserInput
   session?: Prisma.SessionCreateNestedManyWithoutUserInput
   otp?: Prisma.OtpCreateNestedManyWithoutUserInput
+  medications?: Prisma.MedicationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -317,6 +321,7 @@ export type UserUncheckedCreateInput = {
   profilePicture?: Prisma.ProfilePictureUncheckedCreateNestedOneWithoutUserInput
   session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   otp?: Prisma.OtpUncheckedCreateNestedManyWithoutUserInput
+  medications?: Prisma.MedicationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -329,6 +334,7 @@ export type UserUpdateInput = {
   profilePicture?: Prisma.ProfilePictureUpdateOneWithoutUserNestedInput
   session?: Prisma.SessionUpdateManyWithoutUserNestedInput
   otp?: Prisma.OtpUpdateManyWithoutUserNestedInput
+  medications?: Prisma.MedicationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -342,6 +348,7 @@ export type UserUncheckedUpdateInput = {
   profilePicture?: Prisma.ProfilePictureUncheckedUpdateOneWithoutUserNestedInput
   session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   otp?: Prisma.OtpUncheckedUpdateManyWithoutUserNestedInput
+  medications?: Prisma.MedicationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -478,6 +485,20 @@ export type UserUpdateOneRequiredWithoutOtpNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOtpInput, Prisma.UserUpdateWithoutOtpInput>, Prisma.UserUncheckedUpdateWithoutOtpInput>
 }
 
+export type UserCreateNestedOneWithoutMedicationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMedicationsInput, Prisma.UserUncheckedCreateWithoutMedicationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMedicationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutMedicationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMedicationsInput, Prisma.UserUncheckedCreateWithoutMedicationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMedicationsInput
+  upsert?: Prisma.UserUpsertWithoutMedicationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMedicationsInput, Prisma.UserUpdateWithoutMedicationsInput>, Prisma.UserUncheckedUpdateWithoutMedicationsInput>
+}
+
 export type UserCreateWithoutProfilePictureInput = {
   email: string
   fullName: string
@@ -487,6 +508,7 @@ export type UserCreateWithoutProfilePictureInput = {
   updatedAt?: Date | string
   session?: Prisma.SessionCreateNestedManyWithoutUserInput
   otp?: Prisma.OtpCreateNestedManyWithoutUserInput
+  medications?: Prisma.MedicationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProfilePictureInput = {
@@ -499,6 +521,7 @@ export type UserUncheckedCreateWithoutProfilePictureInput = {
   updatedAt?: Date | string
   session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   otp?: Prisma.OtpUncheckedCreateNestedManyWithoutUserInput
+  medications?: Prisma.MedicationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProfilePictureInput = {
@@ -526,6 +549,7 @@ export type UserUpdateWithoutProfilePictureInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   session?: Prisma.SessionUpdateManyWithoutUserNestedInput
   otp?: Prisma.OtpUpdateManyWithoutUserNestedInput
+  medications?: Prisma.MedicationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfilePictureInput = {
@@ -538,6 +562,7 @@ export type UserUncheckedUpdateWithoutProfilePictureInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   otp?: Prisma.OtpUncheckedUpdateManyWithoutUserNestedInput
+  medications?: Prisma.MedicationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionInput = {
@@ -549,6 +574,7 @@ export type UserCreateWithoutSessionInput = {
   updatedAt?: Date | string
   profilePicture?: Prisma.ProfilePictureCreateNestedOneWithoutUserInput
   otp?: Prisma.OtpCreateNestedManyWithoutUserInput
+  medications?: Prisma.MedicationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionInput = {
@@ -561,6 +587,7 @@ export type UserUncheckedCreateWithoutSessionInput = {
   updatedAt?: Date | string
   profilePicture?: Prisma.ProfilePictureUncheckedCreateNestedOneWithoutUserInput
   otp?: Prisma.OtpUncheckedCreateNestedManyWithoutUserInput
+  medications?: Prisma.MedicationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionInput = {
@@ -588,6 +615,7 @@ export type UserUpdateWithoutSessionInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profilePicture?: Prisma.ProfilePictureUpdateOneWithoutUserNestedInput
   otp?: Prisma.OtpUpdateManyWithoutUserNestedInput
+  medications?: Prisma.MedicationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionInput = {
@@ -600,6 +628,7 @@ export type UserUncheckedUpdateWithoutSessionInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profilePicture?: Prisma.ProfilePictureUncheckedUpdateOneWithoutUserNestedInput
   otp?: Prisma.OtpUncheckedUpdateManyWithoutUserNestedInput
+  medications?: Prisma.MedicationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutOtpInput = {
@@ -611,6 +640,7 @@ export type UserCreateWithoutOtpInput = {
   updatedAt?: Date | string
   profilePicture?: Prisma.ProfilePictureCreateNestedOneWithoutUserInput
   session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  medications?: Prisma.MedicationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOtpInput = {
@@ -623,6 +653,7 @@ export type UserUncheckedCreateWithoutOtpInput = {
   updatedAt?: Date | string
   profilePicture?: Prisma.ProfilePictureUncheckedCreateNestedOneWithoutUserInput
   session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  medications?: Prisma.MedicationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOtpInput = {
@@ -650,6 +681,7 @@ export type UserUpdateWithoutOtpInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profilePicture?: Prisma.ProfilePictureUpdateOneWithoutUserNestedInput
   session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  medications?: Prisma.MedicationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOtpInput = {
@@ -662,6 +694,73 @@ export type UserUncheckedUpdateWithoutOtpInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profilePicture?: Prisma.ProfilePictureUncheckedUpdateOneWithoutUserNestedInput
   session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  medications?: Prisma.MedicationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutMedicationsInput = {
+  email: string
+  fullName: string
+  password: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profilePicture?: Prisma.ProfilePictureCreateNestedOneWithoutUserInput
+  session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  otp?: Prisma.OtpCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutMedicationsInput = {
+  id?: number
+  email: string
+  fullName: string
+  password: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profilePicture?: Prisma.ProfilePictureUncheckedCreateNestedOneWithoutUserInput
+  session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  otp?: Prisma.OtpUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutMedicationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMedicationsInput, Prisma.UserUncheckedCreateWithoutMedicationsInput>
+}
+
+export type UserUpsertWithoutMedicationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMedicationsInput, Prisma.UserUncheckedUpdateWithoutMedicationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMedicationsInput, Prisma.UserUncheckedCreateWithoutMedicationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMedicationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMedicationsInput, Prisma.UserUncheckedUpdateWithoutMedicationsInput>
+}
+
+export type UserUpdateWithoutMedicationsInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profilePicture?: Prisma.ProfilePictureUpdateOneWithoutUserNestedInput
+  session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  otp?: Prisma.OtpUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMedicationsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profilePicture?: Prisma.ProfilePictureUncheckedUpdateOneWithoutUserNestedInput
+  session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  otp?: Prisma.OtpUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -672,11 +771,13 @@ export type UserUncheckedUpdateWithoutOtpInput = {
 export type UserCountOutputType = {
   session: number
   otp: number
+  medications: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   session?: boolean | UserCountOutputTypeCountSessionArgs
   otp?: boolean | UserCountOutputTypeCountOtpArgs
+  medications?: boolean | UserCountOutputTypeCountMedicationsArgs
 }
 
 /**
@@ -703,6 +804,13 @@ export type UserCountOutputTypeCountOtpArgs<ExtArgs extends runtime.Types.Extens
   where?: Prisma.OtpWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMedicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MedicationWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -715,6 +823,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   profilePicture?: boolean | Prisma.User$profilePictureArgs<ExtArgs>
   session?: boolean | Prisma.User$sessionArgs<ExtArgs>
   otp?: boolean | Prisma.User$otpArgs<ExtArgs>
+  medications?: boolean | Prisma.User$medicationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -753,6 +862,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   profilePicture?: boolean | Prisma.User$profilePictureArgs<ExtArgs>
   session?: boolean | Prisma.User$sessionArgs<ExtArgs>
   otp?: boolean | Prisma.User$otpArgs<ExtArgs>
+  medications?: boolean | Prisma.User$medicationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -764,6 +874,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     profilePicture: Prisma.$ProfilePicturePayload<ExtArgs> | null
     session: Prisma.$SessionPayload<ExtArgs>[]
     otp: Prisma.$OtpPayload<ExtArgs>[]
+    medications: Prisma.$MedicationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1170,6 +1281,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   profilePicture<T extends Prisma.User$profilePictureArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$profilePictureArgs<ExtArgs>>): Prisma.Prisma__ProfilePictureClient<runtime.Types.Result.GetResult<Prisma.$ProfilePicturePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   session<T extends Prisma.User$sessionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   otp<T extends Prisma.User$otpArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$otpArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OtpPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  medications<T extends Prisma.User$medicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$medicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MedicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1663,6 +1775,30 @@ export type User$otpArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   take?: number
   skip?: number
   distinct?: Prisma.OtpScalarFieldEnum | Prisma.OtpScalarFieldEnum[]
+}
+
+/**
+ * User.medications
+ */
+export type User$medicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Medication
+   */
+  select?: Prisma.MedicationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Medication
+   */
+  omit?: Prisma.MedicationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MedicationInclude<ExtArgs> | null
+  where?: Prisma.MedicationWhereInput
+  orderBy?: Prisma.MedicationOrderByWithRelationInput | Prisma.MedicationOrderByWithRelationInput[]
+  cursor?: Prisma.MedicationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MedicationScalarFieldEnum | Prisma.MedicationScalarFieldEnum[]
 }
 
 /**

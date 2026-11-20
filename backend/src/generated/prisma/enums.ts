@@ -15,3 +15,60 @@ export const Role = {
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]
+
+
+export const StrengthUnit = {
+  MCG: 'MCG',
+  UG: 'UG',
+  MG: 'MG',
+  G: 'G',
+  ML: 'ML',
+  MG_ML: 'MG_ML',
+  MCG_ML: 'MCG_ML',
+  MG_5_ML: 'MG_5_ML',
+  PERCENT: 'PERCENT',
+  IU: 'IU',
+  MEQ: 'MEQ',
+  MMOL: 'MMOL',
+  UNITS: 'UNITS'
+} as const
+
+export type StrengthUnit = (typeof StrengthUnit)[keyof typeof StrengthUnit]
+
+
+export const Status = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type Status = (typeof Status)[keyof typeof Status]
+
+
+export const MedicationForm = {
+  TABLET: 'TABLET',
+  CAPSULE: 'CAPSULE',
+  LIQUID: 'LIQUID',
+  OTHER: 'OTHER'
+} as const
+
+export type MedicationForm = (typeof MedicationForm)[keyof typeof MedicationForm]
+
+
+export const ScheduleFrequency = {
+  DAILY: 'DAILY',
+  WEEKLY: 'WEEKLY',
+  INTERVAL: 'INTERVAL',
+  AS_NEEDED: 'AS_NEEDED'
+} as const
+
+export type ScheduleFrequency = (typeof ScheduleFrequency)[keyof typeof ScheduleFrequency]
+
+
+export const DoseStatus = {
+  PENDING: 'PENDING',
+  TAKEN: 'TAKEN',
+  SKIPPED: 'SKIPPED',
+  MISSED: 'MISSED'
+} as const
+
+export type DoseStatus = (typeof DoseStatus)[keyof typeof DoseStatus]

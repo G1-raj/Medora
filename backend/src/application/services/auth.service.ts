@@ -4,12 +4,23 @@ import { ITokenService } from "../../domain/interfaces/token.services.js";
 import { SignupDto } from "../dto/signup.dto.js";
 import { LoginDto } from "../dto/login.dto.js";
 import { AppError } from "../../shared/errors/app.error.js";
+import { SendEmailDto } from "../dto/send-email.dto.js";
+import { VerifyOtpDto } from "../dto/verify-otp.dto.js";
+import { ChangePasswordDto } from "../dto/change-password.dto.js";
+import { generateOtp } from "../../infrastructure/services/otp.service.js";
+import { IOtpRepository } from "../../domain/interfaces/otp.repository.js";
+import { ITokenRepository } from "../../domain/interfaces/token.repository.js";
+import { RefreshTokenDto } from "../dto/refresh-token.dto.js";
+import { IEmailService } from "../../domain/interfaces/email.service.js";
 
 export class AuthService {
     constructor(
         private readonly userRepository: IUserRepository,
+        private readonly otpRepository: IOtpRepository,
+        private readonly tokenRepository: ITokenRepository,
         private readonly passwordHasher: IPasswordHasher,
         private readonly tokenService: ITokenService,
+        private readonly emailService: IEmailService
     ) {}
 
     async signup(data: SignupDto) {
@@ -17,7 +28,7 @@ export class AuthService {
 
         if(existingUser) {
             throw new AppError("User already exists", 409);
-        }
+        } 
 
         const hashedPassword = await this.passwordHasher.hash(data.password);
 
@@ -27,15 +38,8 @@ export class AuthService {
             password: hashedPassword
         });
 
-        const accessToken = this.tokenService.generateAccessToken({
-            userId: String(user.id),
-            email: user.email,
-            role: user.role
-        });
-
         return {
             user: this.toSafeUser(user),
-            accessToken
         }
     }
 
@@ -53,15 +57,189 @@ export class AuthService {
         }
 
         const accessToken = this.tokenService.generateAccessToken({
-            userId: String(user.id),
+            userId: user.id,
             email: user.email,
             role: user.role
         });
 
+        const refreshToken = this.tokenService.generateRefreshToken({
+            userId: user.id,
+            email: user.email,
+            role: user.role
+        });
+
+        const refreshTokenHash = await this.passwordHasher.hash(refreshToken);
+
+        await this.tokenRepository.saveToken({
+            userId: user.id,
+            refreshToken: refreshTokenHash
+        });
+
         return {
             user: this.toSafeUser(user),
-            accessToken
+            accessToken,
+            refreshToken
         };
+    }
+
+    async refreshAccessToken(data: RefreshTokenDto) {
+
+
+        const decoded = this.tokenService.verifyRefreshToken(data.refreshToken);
+
+        const user = await this.userRepository.findByEmail(decoded.email);
+
+        if (!user || user.id !== decoded.userId) {
+            throw new AppError("Invalid refresh token", 401);
+        }
+
+        const sessions = await this.tokenRepository.getAllActiveSessions({
+            userId: user.id
+        });
+
+        let matchedSession = null;
+
+        for(const session of sessions) {
+            const isMatch = await this.passwordHasher.compare(data.refreshToken, session.refreshToken);
+
+            if(isMatch) {
+                matchedSession = session;
+                break;
+            }
+        }
+
+        if(!matchedSession) {
+            throw new AppError("Invalid or revoked refresh token", 401);
+        }
+
+        const payload = {
+            userId: user.id,
+            email: user.email,
+            role: user.role
+        }
+
+        const accessToken = this.tokenService.generateAccessToken(payload);
+        const refreshToken = this.tokenService.generateRefreshToken(payload);
+
+        const refreshTokenHash = await this.passwordHasher.hash(data.refreshToken);
+
+        await this.tokenRepository.updateRefreshToken({
+            sessionId: matchedSession.id,
+            refreshToken: refreshTokenHash
+        });
+
+        return {
+            accessToken,
+            refreshToken
+        }
+    }
+
+    async sendOtp(data: SendEmailDto) {
+        const user = await this.userRepository.findByEmail(data.email);
+
+        if (!user) {
+            throw new AppError("If the account exists, an OTP has been sent.", 401);
+        }
+
+        //generate otp
+        const otp = generateOtp();
+        const hashedOtp = await this.passwordHasher.hash(otp);
+
+        await this.otpRepository.saveOtp({
+            userId: user.id,
+            otp: hashedOtp
+        });
+
+        //send otp through email
+        await this.emailService.sendOtpEmail(user.email, otp)
+
+        return "Otp sent successfully"
+
+    }
+
+    async verifyOtp(data: VerifyOtpDto) {
+        const user = await this.userRepository.findByEmail(data.email);
+
+        if (!user) {
+            throw new AppError("Invalid or expired OTP", 401);
+        }
+
+        const otpRecord = await this.otpRepository.readOtp({userId: user.id});
+
+        if(!otpRecord) {
+            throw new AppError("Invalid or Expired Otp", 400);
+        }
+
+        const isValidOtp = await this.passwordHasher.compare(data.otp, otpRecord.otpHash);
+
+        if(!isValidOtp) {
+            throw new AppError("Invalid or expired Otp", 400);
+        }
+
+        const markedUsed = await this.otpRepository.markOtpUsed({otpId: otpRecord.id});
+
+        if (!markedUsed) {
+            throw new AppError("Invalid or expired OTP", 400);
+        }
+
+        return "Otp verified successfully";
+    }
+
+    async changePassword(data: ChangePasswordDto) {
+        const user = await this.userRepository.findByEmail(data.email);
+
+        if (!user) {
+            throw new AppError("Invalid email", 401);
+        }
+
+        const hashedPassword = await this.passwordHasher.hash(data.password);
+
+        const updatedUser = await this.userRepository.updatePassword({
+            email: user.email, 
+            password: hashedPassword
+        });
+
+        return {
+            updatedUser
+        }
+    }
+
+    async logOut(data: RefreshTokenDto) {
+        const decoded = this.tokenService.verifyRefreshToken(data.refreshToken);
+
+        const user = await this.userRepository.findByEmail(decoded.email);
+
+        if (!user || user.id !== decoded.userId) {
+            throw new AppError("Invalid refresh token", 401);
+        }
+
+        const sessions = await this.tokenRepository.getAllActiveSessions({
+            userId: user.id
+        });
+
+        let matchedSession = null;
+
+        for (const session of sessions) {
+            const isMatch = await this.passwordHasher.compare(
+                data.refreshToken,
+                session.refreshToken
+            );
+
+            if (isMatch) {
+                matchedSession = session;
+                break;
+            }
+        }
+
+        if (!matchedSession) {
+            throw new AppError("Invalid or revoked refresh token", 401);
+        }
+
+        await this.tokenRepository.revokeSession({
+            sessionId: matchedSession.id
+        });
+
+        return "Logged out successfully";
     }
 
     private toSafeUser(user: {

@@ -54,7 +54,10 @@ export const ModelName = {
   User: 'User',
   ProfilePicture: 'ProfilePicture',
   Session: 'Session',
-  Otp: 'Otp'
+  Otp: 'Otp',
+  Medication: 'Medication',
+  MedicationSchedule: 'MedicationSchedule',
+  MedicationDose: 'MedicationDose'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -123,6 +126,60 @@ export const OtpScalarFieldEnum = {
 export type OtpScalarFieldEnum = (typeof OtpScalarFieldEnum)[keyof typeof OtpScalarFieldEnum]
 
 
+export const MedicationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  medicineName: 'medicineName',
+  medicineComposition: 'medicineComposition',
+  strength: 'strength',
+  strengthUnit: 'strengthUnit',
+  medicineForm: 'medicineForm',
+  medicineDirection: 'medicineDirection',
+  reasonForMedication: 'reasonForMedication',
+  status: 'status',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MedicationScalarFieldEnum = (typeof MedicationScalarFieldEnum)[keyof typeof MedicationScalarFieldEnum]
+
+
+export const MedicationScheduleScalarFieldEnum = {
+  id: 'id',
+  medicationId: 'medicationId',
+  frequency: 'frequency',
+  times: 'times',
+  weekDays: 'weekDays',
+  intervalHours: 'intervalHours',
+  doseQuantity: 'doseQuantity',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MedicationScheduleScalarFieldEnum = (typeof MedicationScheduleScalarFieldEnum)[keyof typeof MedicationScheduleScalarFieldEnum]
+
+
+export const MedicationDoseScalarFieldEnum = {
+  id: 'id',
+  scheduleId: 'scheduleId',
+  scheduledAt: 'scheduledAt',
+  takenAt: 'takenAt',
+  status: 'status',
+  doseQuantity: 'doseQuantity',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MedicationDoseScalarFieldEnum = (typeof MedicationDoseScalarFieldEnum)[keyof typeof MedicationDoseScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -137,4 +194,12 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
