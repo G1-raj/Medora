@@ -7,7 +7,26 @@
 
 import Foundation
 
-actor TokenManager {
+protocol TokenManagerProtocol: Sendable {
+    
+    func getAccessToken() async throws -> String?
+    
+    func saveAccessToken(_ token: String) async throws
+    
+    func clearAccessToken() async throws
+    
+    func refresh(
+        using refreshClosure: @escaping @Sendable () async throws -> String
+    ) async throws -> String
+    
+    func refreshIfNeeded(
+        failedToken: String,
+        using refreshClosure: @escaping @Sendable () async throws -> String
+    ) async throws -> String
+    
+}
+
+actor TokenManager: TokenManagerProtocol {
     private var accessToken: String?
     
     private var refreshTask: Task<String, Error>?
@@ -39,13 +58,13 @@ actor TokenManager {
     
     //delete access token
     func clearAccessToken() throws {
-        try KeyChainHelper.delete()
-        
         accessToken = nil
         
         refreshTask?.cancel()
         refreshTask = nil
         refreshID = nil
+        
+        try KeyChainHelper.delete()
     }
     
     //refresh access token
@@ -89,7 +108,7 @@ actor TokenManager {
     }
     
     //perform refresh
-    func performRefresh(
+    private func performRefresh(
         id: UUID,
         using refreshClosure: @escaping @Sendable () async throws -> String
     ) async throws -> String {
