@@ -10,8 +10,8 @@ import Security
 
 enum KeyChainHelper {
     
-    private static let service = "devplaceholder.IJGCAWK5.Medora"
-    private static let account = "accessToken"
+    nonisolated private static let service = "devplaceholder.IJGCAWK5.Medora"
+    nonisolated private static let account = "accessToken"
     
     enum KeychainError: Error {
         case unhandledError(OSStatus)
@@ -19,7 +19,7 @@ enum KeyChainHelper {
     }
     
     //save access token
-    static func save(_ token: String) throws {
+    nonisolated static func save(_ token: String) throws {
         let data = Data(token.utf8)
         
         let query: [String: Any] = [
@@ -70,7 +70,7 @@ enum KeyChainHelper {
     }
     
     //read token
-    static func read() throws -> String? {
+    nonisolated static func read() throws -> String? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
@@ -102,7 +102,7 @@ enum KeyChainHelper {
     }
     
     //delete token
-    static func delete() throws {
+    nonisolated static func delete() throws {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
